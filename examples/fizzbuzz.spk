@@ -12,6 +12,6 @@ function fizzbuzz parameters with n
             print with string literal other
         close if
     close for
-close function fizzbuzz
+close function
 
 fizzbuzz with 100
