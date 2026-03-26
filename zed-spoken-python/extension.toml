@@ -8,5 +8,5 @@ schema_version = 1
 
 [grammars.spoken_python]
 repository = "https://github.com/rowancallahan/speaky"
-rev = "cbd9466afbfa538fd8f98cf74db3ae245708e45f"
+rev = "15b1c779fefe907198b49a7ad5d60aba1c74c289"
 path = "tree-sitter-spoken-python"
