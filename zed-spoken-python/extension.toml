@@ -9,5 +9,5 @@ languages = ["languages/spoken_python"]
 
 [grammars.spoken_python]
 repository = "https://github.com/rowancallahan/speaky"
-rev = "2e0d3ec8e593f4e92a77c8d82a7b6dc82b97d283"
+rev = "efffc23f765cedc7eda4baed1e50b600c6533f5d"
 path = "tree-sitter-spoken-python"

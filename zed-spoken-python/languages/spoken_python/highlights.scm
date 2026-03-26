@@ -1,44 +1,29 @@
-; Spoken Python syntax highlighting
-
-(comment) @comment
-(aside_comment) @comment
-(as_an_aside_comment) @comment
-(literally) @embedded
-(function_def) @function
-(class_def) @type
-(enchantment) @string
-(call_statement) @function
-(block_close) @keyword
-(expression_line) @variable
-
-"open" @keyword
+; Minimal highlights to test Zed integration
+"function" @keyword
+"class" @keyword
+"if" @keyword
+"else" @keyword
+"for" @keyword
+"while" @keyword
 "close" @keyword
 "let" @keyword
 "be" @keyword
 "call" @keyword
 "with" @keyword
-"enchant" @keyword
 "literally" @keyword
-"decorator" @keyword
-"comment" @comment
-"aside" @comment
-"as" @comment
-"an" @comment
+"enchant" @keyword
 "increase" @keyword
 "decrease" @keyword
 "multiply" @keyword
 "divide" @keyword
 "by" @keyword
-"function" @keyword
-"class" @keyword
-"if" @keyword
-"elif" @keyword
-"else" @keyword
-"for" @keyword
-"while" @keyword
 "try" @keyword
 "except" @keyword
 "finally" @keyword
+"comment" @comment
+"aside" @comment
+"as" @comment
+"an" @comment
 "string" @type
 "math" @type
 "rejection" @type
