@@ -102,16 +102,16 @@ TESTS = [
 
     # ── Conditionals ──────────────────────────────────────
     ("if else",
-     "if x is equal to 5\n    print with x\nelse\n    print with 0\nclose if",
+     "if x equal to 5\n    print with x\nelse\n    print with 0\nclose if",
      "if x == 5:\n    print(x)\nelse:\n    print(0)"),
     ("bare if else if else",
-     "if x is greater than 10\n    print with string literal big\nelse if x is greater than 5\n    print with string literal medium\nelse\n    print with string literal small\nclose if",
+     "if x greater than 10\n    print with string literal big\nelse if x greater than 5\n    print with string literal medium\nelse\n    print with string literal small\nclose if",
      'if x > 10:\n    print("big")\nelif x > 5:\n    print("medium")\nelse:\n    print("small")'),
     ("bare for loop",
      "for i in range with 10\n    print with i\nclose for",
      "for i in range(10):\n    print(i)"),
     ("bare while loop",
-     "while x is greater than 0\n    decrease x by 1\nclose while",
+     "while x greater than 0\n    decrease x by 1\nclose while",
      "while x > 0:\n    x -= 1"),
 
     # ── Exception handling ────────────────────────────────
@@ -129,7 +129,7 @@ TESTS = [
 
     # ── Nested blocks ─────────────────────────────────────
     ("nested function",
-     "function foo with parameters x\n    if x is greater than 0\n        return x\n    close if\n    return 0\nclose function foo",
+     "function foo with parameters x\n    if x greater than 0\n        return x\n    close if\n    return 0\nclose function foo",
      "def foo(x):\n    if x > 0:\n        return x\n    return 0"),
 ]
 

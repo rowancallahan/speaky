@@ -204,20 +204,17 @@ class BlankLine:
 # ============================================================================
 
 OPERATOR_PHRASES = [
-    # Comparison - sentence forms first
-    ("is not equal to", "!="),
-    ("is equal to", "=="),
-    ("is greater than or equal to", ">="),
-    ("is less than or equal to", "<="),
-    ("is greater than", ">"),
-    ("is less than", "<"),
-    # Comparison - terse forms
+    # Comparison - longer phrases first
+    ("not equal to", "!="),
+    ("equal to", "=="),
     ("greater than or equal to", ">="),
     ("less than or equal to", "<="),
-    ("not equals", "!="),
-    ("equals", "=="),
+    ("greater or equal to", ">="),
+    ("less or equal to", "<="),
     ("greater than", ">"),
     ("less than", "<"),
+    ("not equals", "!="),
+    ("equals", "=="),
     # Arithmetic
     ("to the power of", "**"),
     ("integer divided by", "//"),
@@ -481,6 +478,9 @@ class Parser:
         # function, class, for, while, if, elif, else all work without "open"
         if first == "function" and len(words) > 1:
             return self._parse_open_block(["open"] + words)
+        if first == "define" and len(words) > 2 and words[1] == "function":
+            # "define function X ..." → same as "function X ..."
+            return self._parse_open_block(["open"] + words[1:])
         if first == "class" and len(words) > 1:
             return self._parse_open_block(["open"] + words)
         if first == "for" and "in" in words:

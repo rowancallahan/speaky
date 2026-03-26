@@ -4,15 +4,15 @@ let x be 5
 let name be string literal Alice
 let greeting be enchant with string hello variable name
 
-if x is greater than 3
+if x greater than 3
     print with string literal big
 close if
 
-if x is equal to 5
+if x equal to 5
     print with string literal five
 close if
 
-if x is not equal to 0
+if x not equal to 0
     print with string literal nonzero
 close if
 
