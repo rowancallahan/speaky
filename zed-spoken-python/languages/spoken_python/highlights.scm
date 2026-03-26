@@ -1,13 +1,24 @@
 ; Spoken Python highlight queries for Zed
-; Since our tree-sitter grammar has the raw_line issue,
-; we use textmate-style regex patterns via Zed's built-in support.
-; This file uses simple keyword matching.
 
-; Block keywords
+; Keywords
 "open" @keyword
 "close" @keyword
-"function" @keyword
-"class" @keyword
+"comment" @comment
+"aside" @comment
+"as" @comment
+"an" @comment
+"literally" @keyword.special
+"decorator" @keyword
+"let" @keyword
+"be" @keyword
+"increase" @keyword
+"decrease" @keyword
+"multiply" @keyword
+"divide" @keyword
+"by" @keyword
+"call" @keyword
+"enchant" @keyword.special
+"with" @keyword
 "if" @keyword.conditional
 "elif" @keyword.conditional
 "else" @keyword.conditional
@@ -17,39 +28,28 @@
 "try" @keyword.exception
 "except" @keyword.exception
 "finally" @keyword.exception
-"as" @keyword
-"inherits" @keyword
+"function" @keyword
+"class" @keyword
 "parameters" @keyword
-"with" @keyword
+"inherits" @keyword
 
-; Assignment keywords
-"let" @keyword
-"be" @keyword
-"assign" @keyword.operator
-"increase" @keyword
-"decrease" @keyword
-"multiply" @keyword
-"divide" @keyword
-"by" @keyword
+; Enchantment types
+"string" @type
+"math" @type
+"rejection" @type
 
-; Call/access
-"call" @keyword
-"dot" @punctuation.delimiter
+; Block kinds in close
+"function" @keyword
+"class" @keyword
 
-; Special
-"literally" @keyword.special
-"enchant" @keyword.special
-"comment" @comment
-"aside" @comment
-"decorator" @keyword
-
-; Identifiers and literals
-(identifier) @variable
-(comment text: _ @comment)
-(literally code: _ @embedded)
-(function_def name: (identifier) @function.definition)
-(class_def name: (identifier) @type.definition)
-(param_list (identifier) @variable.parameter)
-(call_statement function: (dotted_name) @function.call)
-(enchantment type: _ @type)
-(block_close kind: _ @keyword)
+; Node-level highlights
+(comment) @comment
+(aside_comment) @comment
+(as_an_aside_comment) @comment
+(literally) @embedded
+(enchantment) @string
+(function_def) @function
+(class_def) @type.definition
+(let_assignment) @variable
+(block_close) @keyword
+(expression_line) @variable
