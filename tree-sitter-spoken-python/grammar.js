@@ -1,16 +1,18 @@
 // Tree-sitter grammar for Spoken Python v0.2
-// Line-based grammar: parses structure (blocks, assignments, comments)
-// and captures expression content as raw text.
-// This gives us syntax checking for structural correctness without
-// needing to fully parse every expression.
+// Line-based grammar with external scanner for keyword priority.
 
 module.exports = grammar({
   name: 'spoken_python',
 
   extras: $ => [/[ \t]/],
 
+  externals: $ => [
+    $.expression_line,
+  ],
+
   conflicts: $ => [
     [$.except_open],
+    [$.block_close],
   ],
 
   rules: {
@@ -18,7 +20,7 @@ module.exports = grammar({
 
     _newline: _ => /\r?\n/,
 
-    _statement: $ => seq(optional($._indent), choice(
+    _statement: $ => choice(
       $.comment,
       $.aside_comment,
       $.as_an_aside_comment,
@@ -28,6 +30,7 @@ module.exports = grammar({
       $.class_def,
       $.if_open,
       $.elif_open,
+      $.else_if_open,
       $.else_open,
       $.for_open,
       $.while_open,
@@ -40,132 +43,89 @@ module.exports = grammar({
       $.augmented_assign_sentence,
       $.enchantment,
       $.call_statement,
-      $.expression_line,
-    )),
-
-    _indent: _ => /[ \t]+/,
-
-    // Catch-all for lines that are valid expressions/passthrough
-    // Must only match content NOT starting with a known keyword
-    expression_line: _ => prec(-10, /[^\n]+/),
+      $.expression_line,  // external scanner — only matches non-keyword lines
+    ),
 
     // ── Comments ─────────────────────────────────────────
 
-    comment: _ => seq('comment', field('text', /[^\n]+/)),
-    aside_comment: _ => seq('aside', field('text', /[^\n]+/)),
-    as_an_aside_comment: _ => seq('as', 'an', 'aside', field('text', /[^\n]+/)),
+    comment: _ => seq('comment', /[^\n]+/),
+    aside_comment: _ => seq('aside', /[^\n]+/),
+    as_an_aside_comment: _ => seq('as', 'an', 'aside', /[^\n]+/),
 
     // ── Literal passthrough ──────────────────────────────
 
-    literally: _ => seq('literally', field('code', /[^\n]+/)),
+    literally: _ => seq('literally', /[^\n]+/),
 
     // ── Decorators ───────────────────────────────────────
 
-    decorator: $ => seq('decorator', field('name', $.identifier)),
+    decorator: _ => seq('decorator', /[^\n]+/),
 
     // ── Function Definition ──────────────────────────────
 
-    function_def: $ => seq(
+    function_def: _ => seq(
       'open', 'function',
-      field('name', $.identifier),
-      optional(choice(
-        seq('with', 'parameters', field('params', $.param_list)),
-        seq('parameters', field('params', $.param_list)),
-      )),
-    ),
-
-    param_list: $ => seq(
-      $.identifier,
-      repeat(seq(optional('and'), $.identifier)),
+      /[^\n]+/,
     ),
 
     // ── Class Definition ─────────────────────────────────
 
-    class_def: $ => seq(
-      'open', 'class',
-      field('name', $.identifier),
-      optional(seq('inherits', field('parent', $.identifier))),
-    ),
+    class_def: _ => seq('open', 'class', /[^\n]+/),
 
     // ── Conditionals ─────────────────────────────────────
+    // Both "open if" and bare "if" work (bare handled by external scanner not matching)
 
-    if_open: _ => seq('open', 'if', field('condition', /[^\n]+/)),
-    elif_open: _ => seq('open', 'elif', field('condition', /[^\n]+/)),
-    else_open: _ => seq('open', 'else'),
+    if_open: _ => seq(optional('open'), 'if', /[^\n]+/),
+    elif_open: _ => seq(optional('open'), 'elif', /[^\n]+/),
+    else_if_open: _ => prec(2, seq('else', 'if', /[^\n]+/)),
+    else_open: _ => prec(1, seq(optional('open'), 'else')),
 
     // ── Loops ────────────────────────────────────────────
 
-    for_open: $ => seq(
-      'open', 'for',
-      field('var', $.identifier),
-      'in',
-      field('iterable', /[^\n]+/),
-    ),
-    while_open: _ => seq('open', 'while', field('condition', /[^\n]+/)),
+    for_open: _ => seq(optional('open'), 'for', /[^\n]+/),
+    while_open: _ => seq(optional('open'), 'while', /[^\n]+/),
 
     // ── Context Manager ──────────────────────────────────
 
-    with_open: _ => seq('open', 'with', field('expr', /[^\n]+/)),
+    with_open: _ => seq('open', 'with', /[^\n]+/),
 
     // ── Exception Handling ───────────────────────────────
 
     try_open: _ => seq('open', 'try'),
-    except_open: _ => seq('open', 'except', optional(field('type', /[^\n]+/))),
+    except_open: _ => prec(3, seq('open', 'except', optional(/[^\n]+/))),
     finally_open: _ => seq('open', 'finally'),
 
     // ── Block Close ──────────────────────────────────────
 
-    block_close: $ => seq(
-      'close',
-      field('kind', choice('function', 'class', 'if', 'for', 'while', 'with', 'try')),
-      optional(field('name', $.identifier)),
-    ),
+    block_close: _ => prec(5, seq('close', optional(/[^\n]+/))),
 
     // ── Assignment ───────────────────────────────────────
 
-    let_assignment: $ => seq(
-      'let',
-      field('var', $.identifier),
-      'be',
-      field('value', /[^\n]+/),
-    ),
+    let_assignment: _ => seq('let', /[a-zA-Z_]\w*/, 'be', /[^\n]+/),
 
     // ── Augmented Assignment ─────────────────────────────
 
-    augmented_assign_sentence: $ => seq(
-      field('op', choice('increase', 'decrease', 'multiply', 'divide')),
-      field('var', $.identifier),
+    augmented_assign_sentence: _ => seq(
+      choice('increase', 'decrease', 'multiply', 'divide'),
+      /[a-zA-Z_]\w*/,
       'by',
-      field('value', /[^\n]+/),
+      /[^\n]+/,
     ),
 
     // ── Enchantments ─────────────────────────────────────
 
-    enchantment: $ => seq(
+    enchantment: _ => seq(
       'enchant', 'with',
-      field('type', choice('string', 'rejection', 'math')),
-      field('body', /[^\n]+/),
+      choice('string', 'rejection', 'math'),
+      /[^\n]+/,
     ),
 
     // ── Function Call ────────────────────────────────────
 
-    call_statement: $ => seq(
+    call_statement: _ => seq(
       'call',
-      field('function', $.dotted_name),
-      optional(seq('with', field('args', /[^\n]+/))),
+      /[^\n]+/,
     ),
-
-    dotted_name: $ => seq(
-      $.identifier,
-      repeat(seq('dot', $.identifier)),
-    ),
-
-    // ── Catch-all ────────────────────────────────────────
-
-    raw_line: _ => prec(-10, /[^\n]+/),
 
     // ── Terminals ────────────────────────────────────────
-
-    identifier: _ => /[a-zA-Z_][a-zA-Z0-9_.]+|[a-zA-Z_]/,
   },
 });

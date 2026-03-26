@@ -12,132 +12,22 @@
   {
     "type": "augmented_assign_sentence",
     "named": true,
-    "fields": {
-      "op": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "decrease",
-            "named": false
-          },
-          {
-            "type": "divide",
-            "named": false
-          },
-          {
-            "type": "increase",
-            "named": false
-          },
-          {
-            "type": "multiply",
-            "named": false
-          }
-        ]
-      },
-      "var": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "identifier",
-            "named": true
-          }
-        ]
-      }
-    }
+    "fields": {}
   },
   {
     "type": "block_close",
     "named": true,
-    "fields": {
-      "kind": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "class",
-            "named": false
-          },
-          {
-            "type": "for",
-            "named": false
-          },
-          {
-            "type": "function",
-            "named": false
-          },
-          {
-            "type": "if",
-            "named": false
-          },
-          {
-            "type": "try",
-            "named": false
-          },
-          {
-            "type": "while",
-            "named": false
-          },
-          {
-            "type": "with",
-            "named": false
-          }
-        ]
-      },
-      "name": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "identifier",
-            "named": true
-          }
-        ]
-      }
-    }
+    "fields": {}
   },
   {
     "type": "call_statement",
     "named": true,
-    "fields": {
-      "function": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "dotted_name",
-            "named": true
-          }
-        ]
-      }
-    }
+    "fields": {}
   },
   {
     "type": "class_def",
     "named": true,
-    "fields": {
-      "name": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "identifier",
-            "named": true
-          }
-        ]
-      },
-      "parent": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "identifier",
-            "named": true
-          }
-        ]
-      }
-    }
+    "fields": {}
   },
   {
     "type": "comment",
@@ -147,36 +37,15 @@
   {
     "type": "decorator",
     "named": true,
-    "fields": {
-      "name": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "identifier",
-            "named": true
-          }
-        ]
-      }
-    }
-  },
-  {
-    "type": "dotted_name",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "identifier",
-          "named": true
-        }
-      ]
-    }
+    "fields": {}
   },
   {
     "type": "elif_open",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "else_if_open",
     "named": true,
     "fields": {}
   },
@@ -188,26 +57,7 @@
   {
     "type": "enchantment",
     "named": true,
-    "fields": {
-      "type": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "math",
-            "named": false
-          },
-          {
-            "type": "rejection",
-            "named": false
-          },
-          {
-            "type": "string",
-            "named": false
-          }
-        ]
-      }
-    }
+    "fields": {}
   },
   {
     "type": "except_open",
@@ -222,44 +72,12 @@
   {
     "type": "for_open",
     "named": true,
-    "fields": {
-      "var": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "identifier",
-            "named": true
-          }
-        ]
-      }
-    }
+    "fields": {}
   },
   {
     "type": "function_def",
     "named": true,
-    "fields": {
-      "name": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "identifier",
-            "named": true
-          }
-        ]
-      },
-      "params": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "param_list",
-            "named": true
-          }
-        ]
-      }
-    }
+    "fields": {}
   },
   {
     "type": "if_open",
@@ -269,38 +87,12 @@
   {
     "type": "let_assignment",
     "named": true,
-    "fields": {
-      "var": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "identifier",
-            "named": true
-          }
-        ]
-      }
-    }
+    "fields": {}
   },
   {
     "type": "literally",
     "named": true,
     "fields": {}
-  },
-  {
-    "type": "param_list",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "identifier",
-          "named": true
-        }
-      ]
-    }
   },
   {
     "type": "program",
@@ -347,6 +139,10 @@
           "named": true
         },
         {
+          "type": "else_if_open",
+          "named": true
+        },
+        {
           "type": "else_open",
           "named": true
         },
@@ -356,6 +152,10 @@
         },
         {
           "type": "except_open",
+          "named": true
+        },
+        {
+          "type": "expression_line",
           "named": true
         },
         {
@@ -383,10 +183,6 @@
           "named": true
         },
         {
-          "type": "raw_line",
-          "named": true
-        },
-        {
           "type": "try_open",
           "named": true
         },
@@ -400,11 +196,6 @@
         }
       ]
     }
-  },
-  {
-    "type": "raw_line",
-    "named": true,
-    "fields": {}
   },
   {
     "type": "try_open",
@@ -423,10 +214,6 @@
   },
   {
     "type": "an",
-    "named": false
-  },
-  {
-    "type": "and",
     "named": false
   },
   {
@@ -474,10 +261,6 @@
     "named": false
   },
   {
-    "type": "dot",
-    "named": false
-  },
-  {
     "type": "elif",
     "named": false
   },
@@ -494,6 +277,10 @@
     "named": false
   },
   {
+    "type": "expression_line",
+    "named": true
+  },
+  {
     "type": "finally",
     "named": false
   },
@@ -506,23 +293,11 @@
     "named": false
   },
   {
-    "type": "identifier",
-    "named": true
-  },
-  {
     "type": "if",
     "named": false
   },
   {
-    "type": "in",
-    "named": false
-  },
-  {
     "type": "increase",
-    "named": false
-  },
-  {
-    "type": "inherits",
     "named": false
   },
   {
@@ -543,10 +318,6 @@
   },
   {
     "type": "open",
-    "named": false
-  },
-  {
-    "type": "parameters",
     "named": false
   },
   {
