@@ -1,55 +1,44 @@
-; Spoken Python highlight queries for Zed
+; Spoken Python syntax highlighting
 
-; Keywords
+(comment) @comment
+(aside_comment) @comment
+(as_an_aside_comment) @comment
+(literally) @embedded
+(function_def) @function
+(class_def) @type
+(enchantment) @string
+(call_statement) @function
+(block_close) @keyword
+(expression_line) @variable
+
 "open" @keyword
 "close" @keyword
+"let" @keyword
+"be" @keyword
+"call" @keyword
+"with" @keyword
+"enchant" @keyword
+"literally" @keyword
+"decorator" @keyword
 "comment" @comment
 "aside" @comment
 "as" @comment
 "an" @comment
-"literally" @keyword.special
-"decorator" @keyword
-"let" @keyword
-"be" @keyword
 "increase" @keyword
 "decrease" @keyword
 "multiply" @keyword
 "divide" @keyword
 "by" @keyword
-"call" @keyword
-"enchant" @keyword.special
-"with" @keyword
-"if" @keyword.conditional
-"elif" @keyword.conditional
-"else" @keyword.conditional
-"for" @keyword.repeat
-"while" @keyword.repeat
-"in" @keyword
-"try" @keyword.exception
-"except" @keyword.exception
-"finally" @keyword.exception
 "function" @keyword
 "class" @keyword
-"parameters" @keyword
-"inherits" @keyword
-
-; Enchantment types
+"if" @keyword
+"elif" @keyword
+"else" @keyword
+"for" @keyword
+"while" @keyword
+"try" @keyword
+"except" @keyword
+"finally" @keyword
 "string" @type
 "math" @type
 "rejection" @type
-
-; Block kinds in close
-"function" @keyword
-"class" @keyword
-
-; Node-level highlights
-(comment) @comment
-(aside_comment) @comment
-(as_an_aside_comment) @comment
-(literally) @embedded
-(enchantment) @string
-(function_def) @function
-(class_def) @type.definition
-(let_assignment) @variable
-(block_close) @keyword
-(expression_line) @variable
