@@ -1,11 +1,11 @@
-[package]
 id = "spoken-python"
-name = "spoken-python"
+name = "Spoken Python"
 version = "0.1.0"
-description = "Spoken Python language support for Zed"
-authors = ["Rowan Callahan"]
-repository = "https://github.com/rowancallahan/speaky"
 schema_version = 1
+description = "Spoken Python language support for Zed"
+repository = "https://github.com/rowancallahan/speaky"
+authors = ["Rowan Callahan"]
+languages = ["languages/spoken_python"]
 
 [grammars.spoken_python]
 repository = "https://github.com/rowancallahan/speaky"
