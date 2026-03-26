@@ -2,7 +2,7 @@ class Value
 
     as an aside stores a single scalar value and its gradient
 
-    function __init__ parameters with self and data and _children with default empty tuple and _op with default empty string
+    function __init__ with parameters self and data and _children with default empty tuple and _op with default empty string
         self dot data assign data
         self dot grad assign 0
         as an aside internal variables used for autograd graph construction
@@ -11,7 +11,7 @@ class Value
         self dot _op assign _op
     close function __init__
 
-    function __add__ parameters with self and other
+    function __add__ with parameters self and other
         literally other = other if isinstance(other, Value) else Value(other)
         literally out = Value(self.data + other.data, (self, other), '+')
 
@@ -24,7 +24,7 @@ class Value
         return out
     close function __add__
 
-    function __mul__ parameters with self and other
+    function __mul__ with parameters self and other
         literally other = other if isinstance(other, Value) else Value(other)
         literally out = Value(self.data * other.data, (self, other), '*')
 
@@ -37,7 +37,7 @@ class Value
         return out
     close function __mul__
 
-    function __pow__ parameters with self and other
+    function __pow__ with parameters self and other
         literally assert isinstance(other, (int, float)), "only supporting int/float powers for now"
         literally out = Value(self.data**other, (self,), f'**{other}')
 
@@ -49,7 +49,7 @@ class Value
         return out
     close function __pow__
 
-    function relu parameters with self
+    function relu with parameters self
         literally out = Value(0 if self.data < 0 else self.data, (self,), 'ReLU')
 
         function _backward
@@ -60,13 +60,13 @@ class Value
         return out
     close function relu
 
-    function backward parameters with self
+    function backward with parameters self
 
         as an aside topological order all of the children in the graph
         let topo be empty list
         let visited be empty set
 
-        function build_topo parameters with v
+        function build_topo with parameters v
             if v not in visited
                 visited dot add with v
                 for child in v dot _prev
@@ -84,42 +84,42 @@ class Value
         close for
     close function backward
 
-    function __neg__ parameters with self
+    function __neg__ with parameters self
         as an aside negative self
         return self times minus 1
     close function __neg__
 
-    function __radd__ parameters with self and other
+    function __radd__ with parameters self and other
         as an aside other plus self
         return self plus other
     close function __radd__
 
-    function __sub__ parameters with self and other
+    function __sub__ with parameters self and other
         as an aside self minus other
         literally return self + (-other)
     close function __sub__
 
-    function __rsub__ parameters with self and other
+    function __rsub__ with parameters self and other
         as an aside other minus self
         literally return other + (-self)
     close function __rsub__
 
-    function __rmul__ parameters with self and other
+    function __rmul__ with parameters self and other
         as an aside other times self
         return self times other
     close function __rmul__
 
-    function __truediv__ parameters with self and other
+    function __truediv__ with parameters self and other
         as an aside self divided by other
         literally return self * other**-1
     close function __truediv__
 
-    function __rtruediv__ parameters with self and other
+    function __rtruediv__ with parameters self and other
         as an aside other divided by self
         literally return other * self**-1
     close function __rtruediv__
 
-    function __repr__ parameters with self
+    function __repr__ with parameters self
         literally return f"Value(data={self.data}, grad={self.grad})"
     close function __repr__
 

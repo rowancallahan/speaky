@@ -80,16 +80,16 @@ TESTS = [
 
     # ── Function definitions ──────────────────────────────
     ("function def",
-     "function greet parameters with name\n    call print with name\nclose function greet",
+     "function greet with parameters name\n    call print with name\nclose function greet",
      "def greet(name):\n    print(name)"),
     ("function multi params",
-     "function add parameters with x and y and z\n    pass\nclose function",
+     "function add with parameters x and y and z\n    pass\nclose function",
      "def add(x, y, z):\n    pass"),
     ("function defaults",
-     "function foo parameters with x and y with default 5\n    return x plus y\nclose function",
+     "function foo with parameters x and y with default 5\n    return x plus y\nclose function",
      "def foo(x, y=5):\n    return x + y"),
     ("function unpack",
-     "function foo parameters with x and unpack arguments and unpack keyword kwargs\n    pass\nclose function",
+     "function foo with parameters x and unpack arguments and unpack keyword kwargs\n    pass\nclose function",
      "def foo(x, *arguments, **kwargs):\n    pass"),
     ("function no params",
      "function main\n    pass\nclose function",
@@ -129,7 +129,7 @@ TESTS = [
 
     # ── Nested blocks ─────────────────────────────────────
     ("nested function",
-     "function foo parameters with x\n    if x is greater than 0\n        return x\n    close if\n    return 0\nclose function foo",
+     "function foo with parameters x\n    if x is greater than 0\n        return x\n    close if\n    return 0\nclose function foo",
      "def foo(x):\n    if x > 0:\n        return x\n    return 0"),
 ]
 

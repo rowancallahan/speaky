@@ -1,11 +1,11 @@
 as an aside a simple spoken python example
 
-function greet parameters with name
+function greet with parameters name
     let greeting be enchant with string Hello variable name
     print with greeting
 close function
 
-function factorial parameters with n
+function factorial with parameters n
     if n is less than or equal to 1
         return 1
     close if

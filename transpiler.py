@@ -583,11 +583,11 @@ class Parser:
         """Parse function definitions. Supports two forms:
 
         Preferred form:
-            open function greet parameters with name and age
+            function greet with parameters name and age
             → def greet(name, age):
 
         Terse form (legacy):
-            open function greet parameters name age
+            function greet parameters name age
             → def greet(name, age):
         """
         # words[0]="open", words[1]="function"
@@ -597,19 +597,19 @@ class Parser:
         name = words[2]
         params = []
 
-        # Preferred form: "open function X parameters with P1 and P2"
-        # Supports defaults: "P1 and P2 with default 5"
-        # Supports unpack: "unpack arguments" → *args, "unpack keyword arguments" → **kwargs
-        param_idx = self._find_word(words, "parameters", start=3)
-        if param_idx is not None:
-            with_idx = self._find_word(words, "with", start=param_idx + 1)
-            if with_idx is not None and with_idx == param_idx + 1:
-                # "parameters with P1 and P2 ..."
-                raw_params = words[with_idx + 1:]
+        # Preferred form: "function X with parameters P1 and P2"
+        with_idx = self._find_word(words, "with", start=3)
+        if with_idx is not None:
+            param_idx = self._find_word(words, "parameters", start=with_idx + 1)
+            if param_idx is not None and param_idx == with_idx + 1:
+                # "with parameters P1 and P2 ..."
+                raw_params = words[param_idx + 1:]
                 params = self._parse_param_list(raw_params)
                 return FunctionDef(name, params)
-            else:
-                # Terse form: "parameters P1 P2 P3"
+
+        # Terse form: "function X parameters P1 P2 P3"
+        param_idx = self._find_word(words, "parameters", start=3)
+        if param_idx is not None:
                 params = words[param_idx + 1:]
 
         return FunctionDef(name, params)
