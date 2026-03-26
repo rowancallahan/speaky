@@ -1,87 +1,44 @@
-; Spoken Python syntax highlighting queries
+; Spoken Python syntax highlighting
 
-; ── Keywords ──────────────────────────────────────────────
+(comment) @comment
+(aside_comment) @comment
+(as_an_aside_comment) @comment
+(literally) @embedded
+(function_def) @function
+(class_def) @type
+(enchantment) @string
+(call_statement) @function
+(block_close) @keyword
+(expression_line) @variable
+
 "open" @keyword
 "close" @keyword
-"function" @keyword
-"class" @keyword
-"if" @keyword.conditional
-"elif" @keyword.conditional
-"else" @keyword.conditional
-"for" @keyword.repeat
-"while" @keyword.repeat
-"in" @keyword
-"with" @keyword
-"try" @keyword.exception
-"except" @keyword.exception
-"finally" @keyword.exception
-"as" @keyword
-"inherits" @keyword
-"parameters" @keyword
-"and" @keyword
 "let" @keyword
 "be" @keyword
-"assign" @keyword.operator
+"call" @keyword
+"with" @keyword
+"enchant" @keyword
+"literally" @keyword
+"decorator" @keyword
+"comment" @comment
+"aside" @comment
+"as" @comment
+"an" @comment
 "increase" @keyword
 "decrease" @keyword
 "multiply" @keyword
 "divide" @keyword
 "by" @keyword
-"call" @keyword
-"dot" @punctuation.delimiter
-"literally" @keyword.special
-"enchant" @keyword.special
-"comment" @keyword.comment
-"aside" @keyword.comment
-"decorator" @keyword
-
-; ── Block close kinds ─────────────────────────────────────
-(block_close
-  kind: _ @keyword)
-
-; ── Comments ──────────────────────────────────────────────
-(comment
-  text: _ @comment)
-(aside_comment
-  text: _ @comment)
-(as_an_aside_comment
-  text: _ @comment)
-
-; ── Literally (passthrough) ───────────────────────────────
-(literally
-  code: _ @embedded)
-
-; ── Functions ─────────────────────────────────────────────
-(function_def
-  name: (identifier) @function.definition)
-(param_list
-  (identifier) @variable.parameter)
-
-; ── Classes ───────────────────────────────────────────────
-(class_def
-  name: (identifier) @type.definition)
-(class_def
-  parent: (identifier) @type)
-
-; ── Decorators ────────────────────────────────────────────
-(decorator
-  name: (identifier) @attribute)
-
-; ── Assignments ───────────────────────────────────────────
-(let_assignment
-  var: (identifier) @variable)
-(augmented_assign_sentence
-  var: (identifier) @variable)
-
-; ── Calls ─────────────────────────────────────────────────
-(call_statement
-  function: (dotted_name) @function.call)
-
-; ── Enchantments ──────────────────────────────────────────
-(enchantment
-  type: _ @type)
-(enchantment
-  body: _ @string)
-
-; ── Identifiers ───────────────────────────────────────────
-(identifier) @variable
+"function" @keyword
+"class" @keyword
+"if" @keyword
+"elif" @keyword
+"else" @keyword
+"for" @keyword
+"while" @keyword
+"try" @keyword
+"except" @keyword
+"finally" @keyword
+"string" @type
+"math" @type
+"rejection" @type

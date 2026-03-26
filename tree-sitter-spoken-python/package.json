@@ -43,7 +43,9 @@
   "tree-sitter": [
     {
       "scope": "source.spoken_python",
-      "injection-regex": "^spoken_python$"
+      "injection-regex": "^spoken_python$",
+      "file-types": ["spk"],
+      "highlights": "queries/highlights.scm"
     }
   ]
 }
