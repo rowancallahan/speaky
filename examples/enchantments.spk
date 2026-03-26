@@ -1,17 +1,17 @@
 as an aside Enchant with String examples
 
-let greeting be enchant with string hello variable name welcome to variable place
-let message be enchant with string the result is variable x and the count is variable n
-let label be enchant with string item variable i of variable total
-let info be enchant with string data is variable self dot data
+let greeting equal enchant with string hello variable name welcome to variable place
+let message equal enchant with string the result is variable x and the count is variable n
+let label equal enchant with string item variable i of variable total
+let info equal enchant with string data is variable self dot data
 
 as an aside Enchant with Math examples
 
-let result be enchant with math A mat mul B
-let result be enchant with math transpose of A mat mul B
-let result be enchant with math A element wise times B element wise plus C
-let result be enchant with math inverse of A mat mul B
-let result be enchant with math A cross product B
-let det be enchant with math determinant of A
-let result be enchant with math transpose of X mat mul transpose of Y
-let d be enchant with math A dot B
+let result equal enchant with math A mat mul B
+let result equal enchant with math transpose of A mat mul B
+let result equal enchant with math A element wise times B element wise plus C
+let result equal enchant with math inverse of A mat mul B
+let result equal enchant with math A cross product B
+let det equal enchant with math determinant of A
+let result equal enchant with math transpose of X mat mul transpose of Y
+let d equal enchant with math A dot B

@@ -13,14 +13,14 @@ from spoken_python import transpile
 # (name, spoken_sentence, expected_python)
 TESTS = [
     # ── Assignment ────────────────────────────────────────
-    ("let assign", "let x be 5", "x = 5"),
+    ("let assign", "let x equal 5", "x = 5"),
     ("terse assign", "x assign 5", "x = 5"),
-    ("let string", 'let name be string literal Alice', 'name = "Alice"'),
-    ("let empty list", "let x be empty list", "x = []"),
-    ("let empty dict", "let x be empty dict", "x = {}"),
-    ("let empty tuple", "let x be empty tuple", "x = ()"),
-    ("let empty set", "let x be empty set", "x = set()"),
-    ("let empty string", 'let x be empty string', 'x = ""'),
+    ("let string", 'let name equal string literal Alice', 'name = "Alice"'),
+    ("let empty list", "let x equal empty list", "x = []"),
+    ("let empty dict", "let x equal empty dict", "x = {}"),
+    ("let empty tuple", "let x equal empty tuple", "x = ()"),
+    ("let empty set", "let x equal empty set", "x = set()"),
+    ("let empty string", 'let x equal empty string', 'x = ""'),
 
     # ── Augmented assignment ──────────────────────────────
     ("increase by", "increase x by 1", "x += 1"),
@@ -38,7 +38,7 @@ TESTS = [
     # ── Function calls ────────────────────────────────────
     ("implicit call", "print with x", "print(x)"),
     ("implicit call string", 'print with string literal hello', 'print("hello")'),
-    ("implicit call assign", "let result be foo with x", "result = foo(x)"),
+    ("implicit call assign", "let result equal foo with x", "result = foo(x)"),
     ("explicit call", "call print with x", "print(x)"),
     ("call no args", "call foo", "foo()"),
 

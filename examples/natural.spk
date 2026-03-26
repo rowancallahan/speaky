@@ -1,8 +1,8 @@
 as an aside natural sentence form examples
 
-let x be 5
-let name be string literal Alice
-let greeting be enchant with string hello variable name
+let x equal 5
+let name equal string literal Alice
+let greeting equal enchant with string hello variable name
 
 if x greater than 3
     print with string literal big
@@ -21,4 +21,4 @@ decrease x by 2
 multiply x by 3
 divide x by 4
 
-let result be enchant with math A mat mul B
+let result equal enchant with math A mat mul B

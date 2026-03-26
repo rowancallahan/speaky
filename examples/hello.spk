@@ -1,7 +1,7 @@
 as an aside a simple spoken python example
 
 function greet with parameters name
-    let greeting be enchant with string Hello variable name
+    let greeting equal enchant with string Hello variable name
     print with greeting
 close function
 
@@ -14,5 +14,5 @@ close function
 
 as an aside main program
 greet with string literal World
-let result be factorial with 5
+let result equal factorial with 5
 print with result

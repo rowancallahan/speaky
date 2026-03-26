@@ -63,8 +63,8 @@ class Value
     function backward with parameters self
 
         as an aside topological order all of the children in the graph
-        let topo be empty list
-        let visited be empty set
+        let topo equal empty list
+        let visited equal empty set
 
         function build_topo with parameters v
             if v not in visited

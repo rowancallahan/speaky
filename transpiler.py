@@ -730,9 +730,11 @@ class Parser:
         return ExceptBlock(exc_type, exc_var)
 
     def _parse_let(self, words):
-        """Parse: let <var> be <value_expr>"""
-        # Find "be" keyword
-        be_idx = self._find_word(words, "be", start=1)
+        """Parse: let <var> equal <value_expr> (also accepts 'be')"""
+        # Find "equal" or "be" keyword
+        be_idx = self._find_word(words, "equal", start=1)
+        if be_idx is None:
+            be_idx = self._find_word(words, "be", start=1)
         if be_idx is None or be_idx < 2:
             return ExpressionStatement(" ".join(words))
 
