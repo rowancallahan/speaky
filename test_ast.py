@@ -80,33 +80,28 @@ TESTS = [
 
     # ── Function definitions ──────────────────────────────
     ("function def",
-     "open function greet parameters with name\n    call print with name\nclose function greet",
+     "function greet parameters with name\n    call print with name\nclose function greet",
      "def greet(name):\n    print(name)"),
     ("function multi params",
-     "open function add parameters with x and y and z\n    pass\nclose function",
+     "function add parameters with x and y and z\n    pass\nclose function",
      "def add(x, y, z):\n    pass"),
     ("function defaults",
-     "open function foo parameters with x and y with default 5\n    return x plus y\nclose function",
+     "function foo parameters with x and y with default 5\n    return x plus y\nclose function",
      "def foo(x, y=5):\n    return x + y"),
     ("function unpack",
-     "open function foo parameters with x and unpack arguments and unpack keyword kwargs\n    pass\nclose function",
+     "function foo parameters with x and unpack arguments and unpack keyword kwargs\n    pass\nclose function",
      "def foo(x, *arguments, **kwargs):\n    pass"),
     ("function no params",
-     "open function main\n    pass\nclose function",
+     "function main\n    pass\nclose function",
      "def main():\n    pass"),
 
     # ── Class definitions ─────────────────────────────────
     ("class inherit",
-     "open class Dog inherits Animal\n    pass\nclose class Dog",
+     "class Dog inherits Animal\n    pass\nclose class Dog",
      "class Dog(Animal):\n    pass"),
 
     # ── Conditionals ──────────────────────────────────────
     ("if else",
-     "open if x is equal to 5\n    call print with x\nopen else\n    call print with 0\nclose if",
-     "if x == 5:\n    print(x)\nelse:\n    print(0)"),
-
-    # ── Bare blocks (no open prefix) ────────────────────────
-    ("bare if else",
      "if x is equal to 5\n    print with x\nelse\n    print with 0\nclose if",
      "if x == 5:\n    print(x)\nelse:\n    print(0)"),
     ("bare if else if else",
@@ -126,15 +121,15 @@ TESTS = [
 
     # ── Decorators ────────────────────────────────────────
     ("decorator simple",
-     "decorator staticmethod\nopen function my_method\n    pass\nclose function",
+     "decorator staticmethod\nfunction my_method\n    pass\nclose function",
      "@staticmethod\ndef my_method():\n    pass"),
     ("decorator with args",
-     'decorator call app dot route with string literal /\nopen function index\n    pass\nclose function',
+     'decorator call app dot route with string literal /\nfunction index\n    pass\nclose function',
      '@app.route("/")\ndef index():\n    pass'),
 
     # ── Nested blocks ─────────────────────────────────────
     ("nested function",
-     "open function foo parameters with x\n    open if x is greater than 0\n        return x\n    close if\n    return 0\nclose function foo",
+     "function foo parameters with x\n    if x is greater than 0\n        return x\n    close if\n    return 0\nclose function foo",
      "def foo(x):\n    if x > 0:\n        return x\n    return 0"),
 ]
 

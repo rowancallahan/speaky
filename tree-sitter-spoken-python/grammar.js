@@ -63,13 +63,13 @@ module.exports = grammar({
     // ── Function Definition ──────────────────────────────
 
     function_def: _ => seq(
-      'open', 'function',
+      optional('open'), 'function',
       /[^\n]+/,
     ),
 
     // ── Class Definition ─────────────────────────────────
 
-    class_def: _ => seq('open', 'class', /[^\n]+/),
+    class_def: _ => seq(optional('open'), 'class', /[^\n]+/),
 
     // ── Conditionals ─────────────────────────────────────
     // Both "open if" and bare "if" work (bare handled by external scanner not matching)

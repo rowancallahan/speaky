@@ -16,6 +16,7 @@ static const char *KEYWORDS[] = {
     "literally", "decorator", "let",
     "increase", "decrease", "multiply", "divide",
     "enchant", "call", "if", "else", "for", "while",
+    "function", "class",
     NULL,
 };
 

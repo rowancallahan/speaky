@@ -478,7 +478,11 @@ class Parser:
             return self._parse_open_block(words)
 
         # --- Bare block openers (no "open" prefix) ---
-        # for, while, if, elif, else all work without "open"
+        # function, class, for, while, if, elif, else all work without "open"
+        if first == "function" and len(words) > 1:
+            return self._parse_open_block(["open"] + words)
+        if first == "class" and len(words) > 1:
+            return self._parse_open_block(["open"] + words)
         if first == "for" and "in" in words:
             return self._parse_open_block(["open"] + words)
         if first == "while" and len(words) > 1:

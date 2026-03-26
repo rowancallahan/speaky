@@ -1,6 +1,6 @@
 as an aside FizzBuzz in Spoken Python
 
-open function fizzbuzz parameters with n
+function fizzbuzz parameters with n
     for i in range with n
         if i modulo 15 equals 0
             print with string literal FizzBuzz
