@@ -1,0 +1,17 @@
+as an aside FizzBuzz in Spoken Python
+
+open function fizzbuzz parameters with n
+    for i in range with n
+        if i modulo 15 equals 0
+            print with string literal FizzBuzz
+        else if i modulo 3 equals 0
+            print with string literal Fizz
+        else if i modulo 5 equals 0
+            print with string literal Buzz
+        else
+            print with string literal other
+        close if
+    close for
+close function fizzbuzz
+
+fizzbuzz with 100

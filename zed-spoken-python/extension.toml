@@ -1,0 +1,11 @@
+[package]
+name = "spoken-python"
+version = "0.1.0"
+description = "Spoken Python language support for Zed"
+authors = ["Rowan Callahan"]
+repository = "https://github.com/rowancallahan/oralpython"
+
+[grammars.spoken_python]
+repository = "https://github.com/rowancallahan/oralpython"
+rev = "main"
+path = "tree-sitter-spoken-python"

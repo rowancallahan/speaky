@@ -1,0 +1,100 @@
+{
+  "name": "Spoken Python",
+  "scopeName": "source.spoken_python",
+  "fileTypes": ["spk"],
+  "patterns": [
+    {
+      "name": "comment.line.spoken-python",
+      "match": "^\\s*(comment|aside|as an aside)\\s+(.*)$",
+      "captures": {
+        "1": { "name": "keyword.comment.spoken-python" },
+        "2": { "name": "comment.line.spoken-python" }
+      }
+    },
+    {
+      "name": "keyword.special.literally.spoken-python",
+      "begin": "^\\s*literally\\s+",
+      "end": "$",
+      "beginCaptures": {
+        "0": { "name": "keyword.special.spoken-python" }
+      },
+      "contentName": "meta.embedded.python"
+    },
+    {
+      "name": "keyword.control.block.spoken-python",
+      "match": "\\b(open|close)\\b",
+      "captures": { "1": { "name": "keyword.control.spoken-python" } }
+    },
+    {
+      "name": "keyword.declaration.spoken-python",
+      "match": "\\b(function|class|decorator)\\b"
+    },
+    {
+      "name": "keyword.control.conditional.spoken-python",
+      "match": "\\b(if|elif|else)\\b"
+    },
+    {
+      "name": "keyword.control.loop.spoken-python",
+      "match": "\\b(for|while|in)\\b"
+    },
+    {
+      "name": "keyword.control.exception.spoken-python",
+      "match": "\\b(try|except|finally)\\b"
+    },
+    {
+      "name": "keyword.operator.assignment.spoken-python",
+      "match": "\\b(let|be|assign|increase|decrease|multiply|divide|by)\\b"
+    },
+    {
+      "name": "keyword.other.spoken-python",
+      "match": "\\b(parameters|with|as|inherits|call|return|import|from|pass|break|continue)\\b"
+    },
+    {
+      "name": "keyword.operator.comparison.spoken-python",
+      "match": "\\b(is equal to|is not equal to|is greater than|is less than|equals|not equals|greater than|less than|logical and|logical or|logical not)\\b"
+    },
+    {
+      "name": "keyword.operator.arithmetic.spoken-python",
+      "match": "\\b(plus|minus|times|divided by|modulo|to the power of|concatenate)\\b"
+    },
+    {
+      "name": "keyword.special.enchant.spoken-python",
+      "match": "\\b(enchant)\\b"
+    },
+    {
+      "name": "support.type.enchant.spoken-python",
+      "match": "(?<=enchant with )\\b(string|math|rejection)\\b"
+    },
+    {
+      "name": "keyword.other.collection.spoken-python",
+      "match": "\\b(empty|list of|open paren|close paren|group|end group)\\b"
+    },
+    {
+      "name": "variable.parameter.spoken-python",
+      "match": "(?<=variable |var )\\b[a-zA-Z_][a-zA-Z0-9_.]*\\b"
+    },
+    {
+      "name": "keyword.other.variable-marker.spoken-python",
+      "match": "\\b(variable|var)\\b"
+    },
+    {
+      "name": "punctuation.accessor.dot.spoken-python",
+      "match": "\\b(dot|into)\\b"
+    },
+    {
+      "name": "string.quoted.spoken-python",
+      "match": "string literal\\s+[^\n]*",
+      "captures": {
+        "0": { "name": "string.quoted.double.spoken-python" }
+      }
+    },
+    {
+      "name": "constant.language.spoken-python",
+      "match": "\\b(True|False|None)\\b"
+    },
+    {
+      "name": "constant.numeric.spoken-python",
+      "match": "\\b\\d+(\\.\\d+)?\\b"
+    }
+  ]
+}

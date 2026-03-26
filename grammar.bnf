@@ -1,0 +1,171 @@
+; ============================================================
+; Spoken Python — BNF Grammar Specification
+; ============================================================
+; Each line of input maps to exactly one <statement>.
+; Block nesting is tracked by open/close pairs, not indentation.
+
+<program>         ::= <line>*
+
+<line>            ::= <statement> | <blank_line>
+<blank_line>      ::= ""
+
+<statement>       ::= <comment>
+                     | <decorator>
+                     | <block_open>
+                     | <block_close>
+                     | <let_assignment>
+                     | <assign_statement>
+                     | <augmented_assign>
+                     | <enchantment>
+                     | <expression_stmt>
+
+; ── Comments & Decorators ──────────────────────────────────
+
+<comment>         ::= "comment" <rest_of_line>
+<decorator>       ::= "decorator" <identifier>
+
+; ── Block Structures ───────────────────────────────────────
+
+<block_open>      ::= <function_def>
+                     | <class_def>
+                     | <if_open>
+                     | <elif_open>
+                     | <else_open>
+                     | <for_open>
+                     | <while_open>
+                     | <with_open>
+                     | <try_open>
+                     | <except_open>
+                     | <finally_open>
+
+<block_close>     ::= "close" <block_kind> <identifier>?
+<block_kind>      ::= "function" | "class" | "if" | "for" | "while" | "with" | "try"
+
+; ── Function Definition ────────────────────────────────────
+; Sentence form:  open function greet with parameters name and age
+; Terse form:     open function greet parameters name age
+
+<function_def>    ::= "open" "function" <identifier> <param_clause>?
+<param_clause>    ::= "with" "parameters" <param_list>
+                     | "parameters" <param_list_terse>
+<param_list>      ::= <identifier> ( "and" <identifier> )*
+<param_list_terse>::= <identifier>+
+
+; ── Class Definition ───────────────────────────────────────
+
+<class_def>       ::= "open" "class" <identifier> ( "inherits" <identifier> )?
+
+; ── Conditionals ───────────────────────────────────────────
+
+<if_open>         ::= "open" "if" <expression>
+<elif_open>       ::= "open" "elif" <expression>
+<else_open>       ::= "open" "else"
+
+; ── Loops ──────────────────────────────────────────────────
+
+<for_open>        ::= "open" "for" <identifier> "in" <expression>
+<while_open>      ::= "open" "while" <expression>
+
+; ── Context Managers ───────────────────────────────────────
+
+<with_open>       ::= "open" "with" <expression> ( "as" <identifier> )?
+
+; ── Exception Handling ─────────────────────────────────────
+
+<try_open>        ::= "open" "try"
+<except_open>     ::= "open" "except" ( <identifier> ( "as" <identifier> )? )?
+<finally_open>    ::= "open" "finally"
+
+; ── Assignment ─────────────────────────────────────────────
+
+<let_assignment>  ::= "let" <identifier> "be" <expression>
+<assign_statement>::= <identifier> "assign" <expression>
+
+; ── Augmented Assignment ───────────────────────────────────
+
+<augmented_assign>::= <aug_keyword> <identifier> "by" <expression>
+                    | <identifier> <aug_op> <expression>
+<aug_keyword>     ::= "increase" | "decrease" | "multiply" | "divide"
+<aug_op>          ::= "plus" "assign" | "minus" "assign" | "times" "assign"
+
+; ── Enchantments ───────────────────────────────────────────
+
+<enchantment>     ::= "enchant" "with" <enchant_type> <enchant_body>
+<enchant_type>    ::= "string" | "rejection" | "math"
+<enchant_body>    ::= <rest_of_line>
+
+; String enchantment body:
+<string_body>     ::= ( <word> | <var_ref> )*
+<var_ref>         ::= ( "variable" | "var" ) <identifier>
+
+; Math enchantment body:
+<math_body>       ::= <math_expr>+
+<math_expr>       ::= "transpose" "of" <identifier>
+                     | "inverse" "of" <identifier>
+                     | "determinant" "of" <identifier>
+                     | <identifier> "mat" "mul" <identifier>
+                     | <identifier> "dot" <identifier>
+                     | <identifier> "cross" "product" <identifier>
+                     | <identifier> "element" "wise" <ewise_op> <identifier>
+                     | <identifier>
+<ewise_op>        ::= "times" | "plus" | "minus" | "divided" "by"
+
+; ── Expressions ────────────────────────────────────────────
+
+<expression>      ::= <call_expr>
+                     | <string_literal>
+                     | <f_string_literal>
+                     | <index_expr>
+                     | <slice_expr>
+                     | <list_literal>
+                     | <binary_expr>
+                     | <atom>
+
+<call_expr>       ::= "call" <dotted_name> "with" <arg_list>
+                     | "call" <dotted_name>
+<dotted_name>     ::= <identifier> ( "dot" <identifier> )*
+<arg_list>        ::= <expression>+
+
+<string_literal>  ::= "string" "literal" <rest_of_line>
+<f_string_literal>::= "f" "string" "literal" <f_string_body>
+<f_string_body>   ::= ( <word> | "open" "expression" <identifier> "close" "expression" )*
+
+<index_expr>      ::= "index" <identifier> "at" <expression>
+<slice_expr>      ::= "slice" <identifier> "from" <expression> "to" <expression>
+<list_literal>    ::= "list" "of" <expression>+
+
+<binary_expr>     ::= <expression> <comparison_op> <expression>
+                     | <expression> <arithmetic_op> <expression>
+
+<comparison_op>   ::= "is" "equal" "to"
+                     | "is" "not" "equal" "to"
+                     | "is" "greater" "than" "or" "equal" "to"
+                     | "is" "less" "than" "or" "equal" "to"
+                     | "is" "greater" "than"
+                     | "is" "less" "than"
+                     | "equals"
+                     | "not" "equals"
+                     | "greater" "than" "or" "equal" "to"
+                     | "less" "than" "or" "equal" "to"
+                     | "greater" "than"
+                     | "less" "than"
+
+<arithmetic_op>   ::= "plus" | "minus" | "times" | "divided" "by"
+                     | "integer" "divided" "by" | "modulo"
+                     | "to" "the" "power" "of" | "concatenate"
+
+<atom>            ::= <identifier> | <number> | "True" | "False" | "None"
+
+; ── Passthrough Keywords ───────────────────────────────────
+; These are valid Python that passes through unchanged:
+; return, yield, import, from, as, pass, break, continue,
+; global, nonlocal, assert, raise, del, lambda, in, is, not in, is not
+
+<expression_stmt> ::= <rest_of_line>
+
+; ── Terminals ──────────────────────────────────────────────
+
+<identifier>      ::= [a-zA-Z_] [a-zA-Z0-9_]*
+<number>          ::= [0-9]+ ( "." [0-9]+ )?
+<word>            ::= [^\s]+
+<rest_of_line>    ::= .*

@@ -1,0 +1,9 @@
+name = "Spoken Python"
+grammar = "spoken_python"
+path_suffixes = ["spk"]
+line_comments = ["comment ", "aside "]
+block_comment = ["as an aside ", ""]
+brackets = [
+  { start = "open ", end = "close ", close = true, newline = true },
+]
+word_characters = ["_"]

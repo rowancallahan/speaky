@@ -1,0 +1,18 @@
+as an aside A simple Spoken Python example
+
+open function greet parameters with name
+    let greeting be enchant with string Hello variable name
+    print with greeting
+close function greet
+
+open function factorial parameters with n
+    open if n is less than or equal to 1
+        return 1
+    close if
+    return n times factorial with n minus 1
+close function factorial
+
+as an aside Main program
+greet with string literal World
+let result be factorial with 5
+print with result

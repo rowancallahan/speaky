@@ -1,0 +1,572 @@
+[
+  {
+    "type": "as_an_aside_comment",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "aside_comment",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "augmented_assign_sentence",
+    "named": true,
+    "fields": {
+      "op": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "decrease",
+            "named": false
+          },
+          {
+            "type": "divide",
+            "named": false
+          },
+          {
+            "type": "increase",
+            "named": false
+          },
+          {
+            "type": "multiply",
+            "named": false
+          }
+        ]
+      },
+      "var": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "block_close",
+    "named": true,
+    "fields": {
+      "kind": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "class",
+            "named": false
+          },
+          {
+            "type": "for",
+            "named": false
+          },
+          {
+            "type": "function",
+            "named": false
+          },
+          {
+            "type": "if",
+            "named": false
+          },
+          {
+            "type": "try",
+            "named": false
+          },
+          {
+            "type": "while",
+            "named": false
+          },
+          {
+            "type": "with",
+            "named": false
+          }
+        ]
+      },
+      "name": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "call_statement",
+    "named": true,
+    "fields": {
+      "function": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "dotted_name",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "class_def",
+    "named": true,
+    "fields": {
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          }
+        ]
+      },
+      "parent": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "comment",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "decorator",
+    "named": true,
+    "fields": {
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "dotted_name",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "identifier",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "elif_open",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "else_open",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "enchantment",
+    "named": true,
+    "fields": {
+      "type": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "math",
+            "named": false
+          },
+          {
+            "type": "rejection",
+            "named": false
+          },
+          {
+            "type": "string",
+            "named": false
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "except_open",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "finally_open",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "for_open",
+    "named": true,
+    "fields": {
+      "var": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "function_def",
+    "named": true,
+    "fields": {
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          }
+        ]
+      },
+      "params": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "param_list",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "if_open",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "let_assignment",
+    "named": true,
+    "fields": {
+      "var": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "literally",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "param_list",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "identifier",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "program",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "as_an_aside_comment",
+          "named": true
+        },
+        {
+          "type": "aside_comment",
+          "named": true
+        },
+        {
+          "type": "augmented_assign_sentence",
+          "named": true
+        },
+        {
+          "type": "block_close",
+          "named": true
+        },
+        {
+          "type": "call_statement",
+          "named": true
+        },
+        {
+          "type": "class_def",
+          "named": true
+        },
+        {
+          "type": "comment",
+          "named": true
+        },
+        {
+          "type": "decorator",
+          "named": true
+        },
+        {
+          "type": "elif_open",
+          "named": true
+        },
+        {
+          "type": "else_open",
+          "named": true
+        },
+        {
+          "type": "enchantment",
+          "named": true
+        },
+        {
+          "type": "except_open",
+          "named": true
+        },
+        {
+          "type": "finally_open",
+          "named": true
+        },
+        {
+          "type": "for_open",
+          "named": true
+        },
+        {
+          "type": "function_def",
+          "named": true
+        },
+        {
+          "type": "if_open",
+          "named": true
+        },
+        {
+          "type": "let_assignment",
+          "named": true
+        },
+        {
+          "type": "literally",
+          "named": true
+        },
+        {
+          "type": "raw_line",
+          "named": true
+        },
+        {
+          "type": "try_open",
+          "named": true
+        },
+        {
+          "type": "while_open",
+          "named": true
+        },
+        {
+          "type": "with_open",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "raw_line",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "try_open",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "while_open",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "with_open",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "an",
+    "named": false
+  },
+  {
+    "type": "and",
+    "named": false
+  },
+  {
+    "type": "as",
+    "named": false
+  },
+  {
+    "type": "aside",
+    "named": false
+  },
+  {
+    "type": "be",
+    "named": false
+  },
+  {
+    "type": "by",
+    "named": false
+  },
+  {
+    "type": "call",
+    "named": false
+  },
+  {
+    "type": "class",
+    "named": false
+  },
+  {
+    "type": "close",
+    "named": false
+  },
+  {
+    "type": "comment",
+    "named": false
+  },
+  {
+    "type": "decorator",
+    "named": false
+  },
+  {
+    "type": "decrease",
+    "named": false
+  },
+  {
+    "type": "divide",
+    "named": false
+  },
+  {
+    "type": "dot",
+    "named": false
+  },
+  {
+    "type": "elif",
+    "named": false
+  },
+  {
+    "type": "else",
+    "named": false
+  },
+  {
+    "type": "enchant",
+    "named": false
+  },
+  {
+    "type": "except",
+    "named": false
+  },
+  {
+    "type": "finally",
+    "named": false
+  },
+  {
+    "type": "for",
+    "named": false
+  },
+  {
+    "type": "function",
+    "named": false
+  },
+  {
+    "type": "identifier",
+    "named": true
+  },
+  {
+    "type": "if",
+    "named": false
+  },
+  {
+    "type": "in",
+    "named": false
+  },
+  {
+    "type": "increase",
+    "named": false
+  },
+  {
+    "type": "inherits",
+    "named": false
+  },
+  {
+    "type": "let",
+    "named": false
+  },
+  {
+    "type": "literally",
+    "named": false
+  },
+  {
+    "type": "math",
+    "named": false
+  },
+  {
+    "type": "multiply",
+    "named": false
+  },
+  {
+    "type": "open",
+    "named": false
+  },
+  {
+    "type": "parameters",
+    "named": false
+  },
+  {
+    "type": "rejection",
+    "named": false
+  },
+  {
+    "type": "string",
+    "named": false
+  },
+  {
+    "type": "try",
+    "named": false
+  },
+  {
+    "type": "while",
+    "named": false
+  },
+  {
+    "type": "with",
+    "named": false
+  }
+]

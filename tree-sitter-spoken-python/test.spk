@@ -1,0 +1,11 @@
+let x be 5
+comment hello world
+open function foo with parameters a and b
+close function foo
+call print with x
+increase x by 1
+as an aside this is a test
+enchant with string hello variable name
+literally x = x + 1
+open if x equals 5
+close if

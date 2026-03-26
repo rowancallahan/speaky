@@ -1,0 +1,126 @@
+open class Value
+
+    as an aside stores a single scalar value and its gradient
+
+    open function __init__ parameters with self and data and _children with default empty tuple and _op with default empty string
+        self dot data assign data
+        self dot grad assign 0
+        as an aside internal variables used for autograd graph construction
+        literally self._backward = lambda: None
+        literally self._prev = set(_children)
+        self dot _op assign _op
+    close function __init__
+
+    open function __add__ parameters with self and other
+        literally other = other if isinstance(other, Value) else Value(other)
+        literally out = Value(self.data + other.data, (self, other), '+')
+
+        open function _backward
+            self dot grad plus assign out dot grad
+            other dot grad plus assign out dot grad
+        close function _backward
+        out dot _backward assign _backward
+
+        return out
+    close function __add__
+
+    open function __mul__ parameters with self and other
+        literally other = other if isinstance(other, Value) else Value(other)
+        literally out = Value(self.data * other.data, (self, other), '*')
+
+        open function _backward
+            self dot grad plus assign other dot data times out dot grad
+            other dot grad plus assign self dot data times out dot grad
+        close function _backward
+        out dot _backward assign _backward
+
+        return out
+    close function __mul__
+
+    open function __pow__ parameters with self and other
+        literally assert isinstance(other, (int, float)), "only supporting int/float powers for now"
+        literally out = Value(self.data**other, (self,), f'**{other}')
+
+        open function _backward
+            literally self.grad += (other * self.data**(other-1)) * out.grad
+        close function _backward
+        out dot _backward assign _backward
+
+        return out
+    close function __pow__
+
+    open function relu parameters with self
+        literally out = Value(0 if self.data < 0 else self.data, (self,), 'ReLU')
+
+        open function _backward
+            literally self.grad += (out.data > 0) * out.grad
+        close function _backward
+        out dot _backward assign _backward
+
+        return out
+    close function relu
+
+    open function backward parameters with self
+
+        as an aside topological order all of the children in the graph
+        let topo be empty list
+        let visited be empty set
+
+        open function build_topo parameters with v
+            open if v not in visited
+                visited dot add with v
+                for child in v dot _prev
+                    build_topo with child
+                close for
+                topo dot append with v
+            close if
+        close function build_topo
+        build_topo with self
+
+        as an aside go one variable at a time and apply the chain rule to get its gradient
+        self dot grad assign 1
+        for v in reversed with topo
+            literally v._backward()
+        close for
+    close function backward
+
+    open function __neg__ parameters with self
+        as an aside negative self
+        return self times minus 1
+    close function __neg__
+
+    open function __radd__ parameters with self and other
+        as an aside other plus self
+        return self plus other
+    close function __radd__
+
+    open function __sub__ parameters with self and other
+        as an aside self minus other
+        literally return self + (-other)
+    close function __sub__
+
+    open function __rsub__ parameters with self and other
+        as an aside other minus self
+        literally return other + (-self)
+    close function __rsub__
+
+    open function __rmul__ parameters with self and other
+        as an aside other times self
+        return self times other
+    close function __rmul__
+
+    open function __truediv__ parameters with self and other
+        as an aside self divided by other
+        literally return self * other**-1
+    close function __truediv__
+
+    open function __rtruediv__ parameters with self and other
+        as an aside other divided by self
+        literally return other * self**-1
+    close function __rtruediv__
+
+    open function __repr__ parameters with self
+        literally return f"Value(data={self.data}, grad={self.grad})"
+    close function __repr__
+
+close class Value

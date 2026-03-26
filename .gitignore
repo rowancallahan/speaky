@@ -1,0 +1,6 @@
+.DS_Store
+__pycache__/
+*.pyc
+node_modules/
+tree-sitter-spoken-python/spoken-python.dylib.dSYM/
+tree-sitter-spoken-python/package-lock.json
