@@ -1,4 +1,5 @@
 [package]
+id = "spoken-python"
 name = "spoken-python"
 version = "0.1.0"
 description = "Spoken Python language support for Zed"
