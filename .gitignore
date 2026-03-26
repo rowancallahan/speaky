@@ -4,3 +4,4 @@ __pycache__/
 node_modules/
 tree-sitter-spoken-python/spoken-python.dylib.dSYM/
 tree-sitter-spoken-python/package-lock.json
+zed-spoken-python/grammars/
