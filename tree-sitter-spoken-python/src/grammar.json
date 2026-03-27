@@ -496,8 +496,17 @@
           "value": "[a-zA-Z_]\\w*"
         },
         {
-          "type": "STRING",
-          "value": "be"
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "equal"
+            },
+            {
+              "type": "STRING",
+              "value": "be"
+            }
+          ]
         },
         {
           "type": "PATTERN",
@@ -599,10 +608,10 @@
   ],
   "conflicts": [
     [
-      "except_open"
+      "block_close"
     ],
     [
-      "block_close"
+      "except_open"
     ]
   ],
   "precedences": [],

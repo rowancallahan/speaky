@@ -1,5 +1,5 @@
-// Tree-sitter grammar for Spoken Python v0.2
-// Line-based grammar with external scanner for keyword priority.
+// Tree-sitter grammar for Spoken Python v0.3
+// Uses external scanner to prevent catch-all from eating keyword lines.
 
 module.exports = grammar({
   name: 'spoken_python',
@@ -11,8 +11,8 @@ module.exports = grammar({
   ],
 
   conflicts: $ => [
-    [$.except_open],
     [$.block_close],
+    [$.except_open],
   ],
 
   rules: {
@@ -43,89 +43,39 @@ module.exports = grammar({
       $.augmented_assign_sentence,
       $.enchantment,
       $.call_statement,
-      $.expression_line,  // external scanner — only matches non-keyword lines
+      $.expression_line,
     ),
-
-    // ── Comments ─────────────────────────────────────────
 
     comment: _ => seq('comment', /[^\n]+/),
     aside_comment: _ => seq('aside', /[^\n]+/),
     as_an_aside_comment: _ => seq('as', 'an', 'aside', /[^\n]+/),
-
-    // ── Literal passthrough ──────────────────────────────
-
     literally: _ => seq('literally', /[^\n]+/),
-
-    // ── Decorators ───────────────────────────────────────
-
     decorator: _ => seq('decorator', /[^\n]+/),
-
-    // ── Function Definition ──────────────────────────────
-
-    function_def: _ => seq(
-      optional('open'), 'function',
-      /[^\n]+/,
-    ),
-
-    // ── Class Definition ─────────────────────────────────
-
+    function_def: _ => seq(optional('open'), 'function', /[^\n]+/),
     class_def: _ => seq(optional('open'), 'class', /[^\n]+/),
-
-    // ── Conditionals ─────────────────────────────────────
-    // Both "open if" and bare "if" work (bare handled by external scanner not matching)
-
     if_open: _ => seq(optional('open'), 'if', /[^\n]+/),
     elif_open: _ => seq(optional('open'), 'elif', /[^\n]+/),
     else_if_open: _ => prec(2, seq('else', 'if', /[^\n]+/)),
     else_open: _ => prec(1, seq(optional('open'), 'else')),
-
-    // ── Loops ────────────────────────────────────────────
-
     for_open: _ => seq(optional('open'), 'for', /[^\n]+/),
     while_open: _ => seq(optional('open'), 'while', /[^\n]+/),
-
-    // ── Context Manager ──────────────────────────────────
-
     with_open: _ => seq('open', 'with', /[^\n]+/),
-
-    // ── Exception Handling ───────────────────────────────
-
     try_open: _ => seq('open', 'try'),
     except_open: _ => prec(3, seq('open', 'except', optional(/[^\n]+/))),
     finally_open: _ => seq('open', 'finally'),
-
-    // ── Block Close ──────────────────────────────────────
-
     block_close: _ => prec(5, seq('close', optional(/[^\n]+/))),
-
-    // ── Assignment ───────────────────────────────────────
-
     let_assignment: _ => seq('let', /[a-zA-Z_]\w*/, choice('equal', 'be'), /[^\n]+/),
-
-    // ── Augmented Assignment ─────────────────────────────
-
     augmented_assign_sentence: _ => seq(
       choice('increase', 'decrease', 'multiply', 'divide'),
       /[a-zA-Z_]\w*/,
       'by',
       /[^\n]+/,
     ),
-
-    // ── Enchantments ─────────────────────────────────────
-
     enchantment: _ => seq(
       'enchant', 'with',
       choice('string', 'rejection', 'math'),
       /[^\n]+/,
     ),
-
-    // ── Function Call ────────────────────────────────────
-
-    call_statement: _ => seq(
-      'call',
-      /[^\n]+/,
-    ),
-
-    // ── Terminals ────────────────────────────────────────
+    call_statement: _ => seq('call', /[^\n]+/),
   },
 });

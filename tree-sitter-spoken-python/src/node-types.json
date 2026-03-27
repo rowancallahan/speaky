@@ -273,6 +273,10 @@
     "named": false
   },
   {
+    "type": "equal",
+    "named": false
+  },
+  {
     "type": "except",
     "named": false
   },
