@@ -1,0 +1,17 @@
+toki lili ni li musi FizzBuzz
+
+pali fizzbuzz kepeken ijo n
+    pro i insa o range kepeken n
+        la i modulo 15 sama 0
+            toki kepeken nimi FizzBuzz
+        ante la i modulo 3 sama 0
+            toki kepeken nimi Fizz
+        ante la i modulo 5 sama 0
+            toki kepeken nimi Buzz
+        ante
+            toki kepeken i
+        pini la
+    pini pro
+pini pali
+
+fizzbuzz kepeken 20

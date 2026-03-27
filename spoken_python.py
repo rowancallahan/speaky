@@ -873,14 +873,30 @@ def transpile(source, stt_mode=False):
 
 def main():
     if len(sys.argv) < 2:
-        print("Usage: python spoken_python.py <input.spk> [-o output.py]")
+        print("Usage: python spoken_python.py <input.spk> [-o output.py] [--stt] [--run] [--dialect NAME]")
         sys.exit(1)
 
     input_file = sys.argv[1]
     stt_mode = "--stt" in sys.argv
+    run_mode = "--run" in sys.argv
+
+    # Dialect support
+    dialect = None
+    if "--dialect" in sys.argv:
+        d_idx = sys.argv.index("--dialect")
+        if d_idx + 1 < len(sys.argv):
+            dialect = sys.argv[d_idx + 1]
+        else:
+            print("Error: --dialect requires a name (church_latin, toki_pona)", file=sys.stderr)
+            sys.exit(1)
 
     with open(input_file) as f:
         source = f.read()
+
+    # Translate dialect → English Spoken Python first
+    if dialect:
+        from dialects.preprocessor import translate_dialect
+        source = translate_dialect(source, dialect)
 
     result = transpile(source, stt_mode=stt_mode)
 
@@ -894,6 +910,8 @@ def main():
         else:
             print("Error: -o requires a filename", file=sys.stderr)
             sys.exit(1)
+    elif run_mode:
+        exec(compile(result, input_file, "exec"))
     else:
         print(result)
 

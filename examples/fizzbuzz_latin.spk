@@ -1,0 +1,17 @@
+nota ludus FizzBuzz in lingua Latina
+
+functio fizzbuzz cum parametris n
+    pro i in voca range cum n
+        si i modulo 15 aequalis 0
+            scribe cum verbum FizzBuzz
+        aliter si i modulo 3 aequalis 0
+            scribe cum verbum Fizz
+        aliter si i modulo 5 aequalis 0
+            scribe cum verbum Buzz
+        aliter
+            scribe cum i
+        amen si
+    amen pro
+amen functio
+
+fizzbuzz cum 20
