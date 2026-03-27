@@ -98,6 +98,10 @@
         },
         {
           "type": "SYMBOL",
+          "name": "the_assignment"
+        },
+        {
+          "type": "SYMBOL",
           "name": "let_assignment"
         },
         {
@@ -483,6 +487,27 @@
           }
         ]
       }
+    },
+    "the_assignment": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "the"
+        },
+        {
+          "type": "PATTERN",
+          "value": "[a-zA-Z_]\\w*"
+        },
+        {
+          "type": "STRING",
+          "value": "is"
+        },
+        {
+          "type": "PATTERN",
+          "value": "[^\\n]+"
+        }
+      ]
     },
     "let_assignment": {
       "type": "SEQ",

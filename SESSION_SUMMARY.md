@@ -131,3 +131,4 @@ oralpython/
 3. Default parameters, empty collections
 4. Reduce micrograd `literally` usage from 21% → ~5%
 5. Spoken APL dialect for math (future)
+6. Variable assignment via "the X is Y" → `x = y` (e.g. "the count is 5" → `count = 5`). This makes variable instantiation read like natural English prose. Not yet implemented — planned for next session.

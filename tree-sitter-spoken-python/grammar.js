@@ -39,6 +39,7 @@ module.exports = grammar({
       $.except_open,
       $.finally_open,
       $.block_close,
+      $.the_assignment,
       $.let_assignment,
       $.augmented_assign_sentence,
       $.enchantment,
@@ -64,6 +65,7 @@ module.exports = grammar({
     except_open: _ => prec(3, seq('open', 'except', optional(/[^\n]+/))),
     finally_open: _ => seq('open', 'finally'),
     block_close: _ => prec(5, seq('close', optional(/[^\n]+/))),
+    the_assignment: _ => seq('the', /[a-zA-Z_]\w*/, 'is', /[^\n]+/),
     let_assignment: _ => seq('let', /[a-zA-Z_]\w*/, choice('equal', 'be'), /[^\n]+/),
     augmented_assign_sentence: _ => seq(
       choice('increase', 'decrease', 'multiply', 'divide'),

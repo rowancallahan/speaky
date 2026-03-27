@@ -10,6 +10,7 @@
 (class_def) @type
 (enchantment) @string
 (call_statement) @function
+(the_assignment) @variable
 (let_assignment) @variable
 (block_close) @keyword
 
@@ -23,6 +24,8 @@
 "while" @keyword
 "close" @keyword
 "open" @keyword
+"the" @keyword
+"is" @keyword
 "let" @keyword
 "call" @keyword
 "with" @keyword

@@ -508,7 +508,9 @@ class Parser:
             body = " ".join(words[3:]) if len(words) > 3 else ""
             return Enchantment(enchant_type, body)
 
-        # --- "let X be Y" ---
+        # --- "the X is Y" or "let X equal/be Y" ---
+        if first == "the" and len(words) >= 4:
+            return self._parse_the_assignment(words)
         if first == "let":
             return self._parse_let(words)
 
@@ -729,8 +731,36 @@ class Parser:
 
         return ExceptBlock(exc_type, exc_var)
 
+    def _parse_the_assignment(self, words):
+        """Parse: the <var> is <value_expr>
+        Example: the count is 5 → count = 5
+        """
+        # Find "is" keyword
+        is_idx = self._find_word(words, "is", start=2)
+        if is_idx is None or is_idx < 2:
+            return ExpressionStatement(" ".join(words))
+
+        var = words[1]
+        value_text = " ".join(words[is_idx + 1:])
+
+        # Check if value contains an enchantment
+        if "enchant with " in value_text:
+            enchant_idx = value_text.index("enchant with ")
+            enchant_part = value_text[enchant_idx:]
+            enchant_words = enchant_part.split()
+            if len(enchant_words) >= 3:
+                etype = enchant_words[2]
+                ebody = " ".join(enchant_words[3:]) if len(enchant_words) > 3 else ""
+                value = self._process_enchantment(etype, ebody)
+            else:
+                value = value_text
+        else:
+            value = self._process_expression(value_text)
+
+        return Assignment(var, value)
+
     def _parse_let(self, words):
-        """Parse: let <var> equal <value_expr> (also accepts 'be')"""
+        """Parse: let <var> equal <value_expr> (also accepts 'be') — legacy"""
         # Find "equal" or "be" keyword
         be_idx = self._find_word(words, "equal", start=1)
         if be_idx is None:
@@ -1591,7 +1621,7 @@ class CodeGenerator:
 SPOKEN_KEYWORDS = {
     "open", "close", "function", "define", "class", "if", "elif", "else",
     "for", "while", "in", "with", "as", "try", "except", "finally",
-    "let", "equal", "be", "assign", "increase", "decrease", "multiply",
+    "the", "is", "let", "equal", "be", "assign", "increase", "decrease", "multiply",
     "divide", "by", "call", "dot", "into", "comment", "aside", "an",
     "literally", "decorator", "enchant", "string", "math", "rejection",
     "variable", "var", "parameters", "inherits", "return", "import",

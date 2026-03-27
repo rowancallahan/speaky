@@ -183,6 +183,10 @@
           "named": true
         },
         {
+          "type": "the_assignment",
+          "named": true
+        },
+        {
           "type": "try_open",
           "named": true
         },
@@ -196,6 +200,11 @@
         }
       ]
     }
+  },
+  {
+    "type": "the_assignment",
+    "named": true,
+    "fields": {}
   },
   {
     "type": "try_open",
@@ -305,6 +314,10 @@
     "named": false
   },
   {
+    "type": "is",
+    "named": false
+  },
+  {
     "type": "let",
     "named": false
   },
@@ -330,6 +343,10 @@
   },
   {
     "type": "string",
+    "named": false
+  },
+  {
+    "type": "the",
     "named": false
   },
   {
