@@ -100,7 +100,7 @@ module.exports = grammar({
 
     // ── Assignment ───────────────────────────────────────
 
-    let_assignment: _ => seq('let', /[a-zA-Z_]\w*/, 'be', /[^\n]+/),
+    let_assignment: _ => seq('let', /[a-zA-Z_]\w*/, choice('equal', 'be'), /[^\n]+/),
 
     // ── Augmented Assignment ─────────────────────────────
 

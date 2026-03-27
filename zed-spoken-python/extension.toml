@@ -1,13 +1,8 @@
 id = "spoken-python"
 name = "Spoken Python"
-version = "0.1.0"
+version = "0.2.0"
 schema_version = 1
 description = "Spoken Python language support for Zed"
 repository = "https://github.com/rowancallahan/speaky"
 authors = ["Rowan Callahan"]
 languages = ["languages/spoken_python"]
-
-[grammars.spoken_python]
-repository = "https://github.com/rowancallahan/speaky"
-rev = "a6f12c25a061598a6bb294626e771f72337ebc7d"
-path = "tree-sitter-spoken-python"

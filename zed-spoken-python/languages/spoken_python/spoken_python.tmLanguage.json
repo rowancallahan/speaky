@@ -4,6 +4,7 @@
   "fileTypes": ["spk"],
   "patterns": [
     {
+      "comment": "Comments: comment X, aside X, as an aside X",
       "name": "comment.line.spoken-python",
       "match": "^\\s*(comment|aside|as an aside)\\s+(.*)$",
       "captures": {
@@ -12,87 +13,91 @@
       }
     },
     {
-      "name": "keyword.special.literally.spoken-python",
-      "begin": "^\\s*literally\\s+",
+      "comment": "Literally passthrough — keyword highlighted, rest is embedded",
+      "begin": "^\\s*(literally)\\s+",
       "end": "$",
       "beginCaptures": {
-        "0": { "name": "keyword.special.spoken-python" }
+        "1": { "name": "keyword.special.spoken-python" }
       },
       "contentName": "meta.embedded.python"
     },
     {
-      "name": "keyword.control.block.spoken-python",
-      "match": "\\b(open|close)\\b",
-      "captures": { "1": { "name": "keyword.control.spoken-python" } }
+      "comment": "String literals: string literal hello world",
+      "match": "(string literal)(\\s+[^\\n]*)?",
+      "captures": {
+        "1": { "name": "keyword.other.spoken-python" },
+        "2": { "name": "string.quoted.double.spoken-python" }
+      }
     },
     {
-      "name": "keyword.declaration.spoken-python",
-      "match": "\\b(function|class|decorator)\\b"
+      "comment": "Enchant with type",
+      "match": "(enchant)(\\s+)(with)(\\s+)(string|math|rejection)",
+      "captures": {
+        "1": { "name": "keyword.special.spoken-python" },
+        "3": { "name": "keyword.special.spoken-python" },
+        "5": { "name": "support.type.spoken-python" }
+      }
     },
     {
+      "comment": "Variable references in enchant string",
+      "match": "\\b(variable|var)\\s+([a-zA-Z_][a-zA-Z0-9_.]*)",
+      "captures": {
+        "1": { "name": "keyword.other.spoken-python" },
+        "2": { "name": "variable.parameter.spoken-python" }
+      }
+    },
+    {
+      "comment": "Block keywords",
+      "name": "keyword.control.spoken-python",
+      "match": "\\b(open|close|function|define|class|decorator)\\b"
+    },
+    {
+      "comment": "Conditional keywords",
       "name": "keyword.control.conditional.spoken-python",
       "match": "\\b(if|elif|else)\\b"
     },
     {
+      "comment": "Loop keywords",
       "name": "keyword.control.loop.spoken-python",
       "match": "\\b(for|while|in)\\b"
     },
     {
+      "comment": "Exception keywords",
       "name": "keyword.control.exception.spoken-python",
       "match": "\\b(try|except|finally)\\b"
     },
     {
+      "comment": "Assignment keywords",
       "name": "keyword.operator.assignment.spoken-python",
-      "match": "\\b(let|be|assign|increase|decrease|multiply|divide|by)\\b"
+      "match": "\\b(let|equal|be|assign|increase|decrease|multiply|divide|by)\\b"
     },
     {
+      "comment": "Call and access keywords",
       "name": "keyword.other.spoken-python",
-      "match": "\\b(parameters|with|as|inherits|call|return|import|from|pass|break|continue)\\b"
+      "match": "\\b(parameters|with|as|inherits|call|return|import|from|pass|break|continue|dot|into)\\b"
     },
     {
+      "comment": "Multi-word comparison operators",
       "name": "keyword.operator.comparison.spoken-python",
-      "match": "\\b(is equal to|is not equal to|is greater than|is less than|equals|not equals|greater than|less than|logical and|logical or|logical not)\\b"
+      "match": "\\b(not equal to|equal to|greater than or equal to|less than or equal to|greater or equal to|less or equal to|greater than|less than|not equals|equals|logical and|logical or|logical not)\\b"
     },
     {
+      "comment": "Arithmetic operators",
       "name": "keyword.operator.arithmetic.spoken-python",
       "match": "\\b(plus|minus|times|divided by|modulo|to the power of|concatenate)\\b"
     },
     {
-      "name": "keyword.special.enchant.spoken-python",
-      "match": "\\b(enchant)\\b"
-    },
-    {
-      "name": "support.type.enchant.spoken-python",
-      "match": "(?<=enchant with )\\b(string|math|rejection)\\b"
-    },
-    {
+      "comment": "Collection keywords",
       "name": "keyword.other.collection.spoken-python",
       "match": "\\b(empty|list of|open paren|close paren|group|end group)\\b"
     },
     {
-      "name": "variable.parameter.spoken-python",
-      "match": "(?<=variable |var )\\b[a-zA-Z_][a-zA-Z0-9_.]*\\b"
-    },
-    {
-      "name": "keyword.other.variable-marker.spoken-python",
-      "match": "\\b(variable|var)\\b"
-    },
-    {
-      "name": "punctuation.accessor.dot.spoken-python",
-      "match": "\\b(dot|into)\\b"
-    },
-    {
-      "name": "string.quoted.spoken-python",
-      "match": "string literal\\s+[^\n]*",
-      "captures": {
-        "0": { "name": "string.quoted.double.spoken-python" }
-      }
-    },
-    {
+      "comment": "Constants",
       "name": "constant.language.spoken-python",
-      "match": "\\b(True|False|None)\\b"
+      "match": "\\b(True|False|None|true|false|none)\\b"
     },
     {
+      "comment": "Numbers",
       "name": "constant.numeric.spoken-python",
       "match": "\\b\\d+(\\.\\d+)?\\b"
     }
