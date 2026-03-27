@@ -5,14 +5,5 @@ function greet with parameters name
     print with greeting
 close function
 
-function factorial with parameters n
-    if n less than or equal to 1
-        return 1
-    close if
-    literally return n * factorial(n - 1)
-close function
-
 as an aside main program
 greet with string literal World
-the result is factorial with 5
-print with result
