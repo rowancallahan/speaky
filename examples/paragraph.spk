@@ -1,0 +1,1 @@
+As an aside this is FizzBuzz written as a paragraph. Function fizzbuzz with parameters n. For i in range with n. If i modulo 15 equals 0. Print with string literal FizzBuzz. Else if i modulo 3 equals 0. Print with string literal Fizz. Else if i modulo 5 equals 0. Print with string literal Buzz. Else. Print with i. Close if. Close for. Close function. Fizzbuzz with 20.

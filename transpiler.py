@@ -1588,13 +1588,76 @@ class CodeGenerator:
 # Pipeline: the main transpile function
 # ============================================================================
 
+SPOKEN_KEYWORDS = {
+    "open", "close", "function", "define", "class", "if", "elif", "else",
+    "for", "while", "in", "with", "as", "try", "except", "finally",
+    "let", "equal", "be", "assign", "increase", "decrease", "multiply",
+    "divide", "by", "call", "dot", "into", "comment", "aside", "an",
+    "literally", "decorator", "enchant", "string", "math", "rejection",
+    "variable", "var", "parameters", "inherits", "return", "import",
+    "from", "pass", "break", "continue", "and", "logical", "not",
+    "equals", "greater", "less", "than", "or", "to", "plus", "minus",
+    "times", "divided", "modulo", "the", "power", "of", "concatenate",
+    "list", "empty", "dictionary", "dict", "tuple", "set", "index",
+    "at", "slice", "group", "end", "paren", "unpack", "arguments",
+    "keyword", "default", "mat", "mul", "transpose", "inverse",
+    "determinant", "cross", "product", "element", "wise",
+    "integer", "f",
+    # Python builtins that STT might capitalize
+    "print", "range", "len", "int", "float", "str", "bool",
+    "true", "false", "none", "type", "isinstance", "assert",
+    "raise", "yield", "global", "nonlocal", "del", "lambda",
+    "not", "is", "self",
+}
+
+
+def _case_normalize(source: str) -> str:
+    """Normalize keywords to lowercase while preserving case of variable names,
+    class names, and string content.
+
+    Only spoken keywords get lowercased. Everything else keeps its original case.
+    """
+    lines = []
+    for line in source.splitlines():
+        stripped = line.strip()
+        if not stripped:
+            lines.append("")
+            continue
+
+        # Literally lines: lowercase only the keyword, preserve the rest
+        if stripped.lower().startswith("literally "):
+            lines.append("literally " + stripped[len("literally "):])
+            continue
+
+        # Lowercase known keywords. For the first word of a line,
+        # also lowercase it if it looks like STT sentence-start capitalization
+        # (e.g. "Fizzbuzz with 20" after a period).
+        words = line.split(" ")
+        result = []
+        for idx, word in enumerate(words):
+            if word.lower() in SPOKEN_KEYWORDS:
+                result.append(word.lower())
+            elif idx == 0 and len(word) > 1 and word[0].isupper() and word[1:].islower():
+                # First word, sentence-start cap: "Fizzbuzz" → "fizzbuzz"
+                result.append(word.lower())
+            else:
+                result.append(word)
+        lines.append(" ".join(result))
+
+    return "\n".join(lines)
+
+
 def transpile(source: str, stt_mode: bool = False) -> str:
     """Transpile Spoken Python source to Python.
 
-    Pipeline: preprocess_stt (optional) -> parse lines -> generate code.
+    Always case-insensitive. Always splits periods into newlines.
+    Pipeline: normalize -> preprocess -> parse lines -> generate code.
     """
-    if stt_mode:
-        source = preprocess_stt(source)
+    # Always preprocess: periods → newlines, strip trailing punctuation
+    source = preprocess_stt(source)
+
+    # Case-insensitive: lowercase everything EXCEPT inside string literals and literally blocks
+    source = _case_normalize(source)
 
     parser = Parser()
     nodes = []
