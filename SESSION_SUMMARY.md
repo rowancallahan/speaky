@@ -163,6 +163,10 @@ Now supported natively in the transpiler:
 - Dot chains still work: `call foo dot bar with x` → `foo.bar(x)`
 - All 58 existing transpiler tests still pass
 
+## Open Issues / Deferred
+
+- **Auto-string for column names** — `count with make` currently requires `count with string literal make`. Need a language-level feature so known dplyr verbs (count, group_by, arrange, etc.) can infer that a bare word like `make` is a column name string rather than a Python identifier. Known approaches: (1) keyword-arg context inference in transpiler, (2) `Col` sentinel class in spoken_dplyr, (3) module-level `__getattr__` magic. Deferred — use `string literal` for now.
+
 ## Next Steps
 
 1. Phase 2 expression parser (recursive descent, `comma` as arg separator)

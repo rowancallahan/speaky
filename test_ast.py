@@ -161,6 +161,23 @@ TESTS = [
      "function compute with parameters horse power and fuel type\n    pass\nclose function",
      "def compute(horse_power, fuel_type):\n    pass"),
 
+    # ── Spoken dplyr verbs ────────────────────────────────
+    ("count with string literal",
+     "count with string literal make",
+     'count("make")'),
+    ("group_by with string literal",
+     "group by with string literal make",
+     'group_by("make")'),
+    ("arrange with string literal",
+     "arrange with string literal mpg",
+     'arrange("mpg")'),
+    ("filter_rows with string literal",
+     "filter rows with string literal mpg > 20",
+     'filter_rows("mpg > 20")'),
+    ("select_cols two cols",
+     "select cols with string literal make and string literal mpg",
+     'select_cols("make", "mpg")'),
+
     # ── Nested blocks ─────────────────────────────────────
     ("nested function",
      "function foo with parameters x\n    if x greater than 0\n        return x\n    close if\n    return 0\nclose function foo",

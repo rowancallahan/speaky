@@ -987,6 +987,7 @@ class Parser:
             "string literal", "open ", "close ", "call ", "assign",
             "equals", "plus", "minus", "times", "divided by",
             "greater than", "less than", "concatenate", "key ", "value ",
+            " and ",   # arg separator — stops string content at 'and'
         ]
 
         end_pos = len(after)
@@ -1176,13 +1177,30 @@ class Parser:
             if not prev[0].isalpha() and prev[0] != '_':
                 continue
 
-            # Build the function name (could be dotted: x.append with 5)
+            # Build the function name (could be dotted or multi-word):
+            # - dotted: a.b.c with args → a.b.c(args)
+            # - multi-word: filter rows with x → filter_rows(x)
             func_name = prev
             func_start = idx - 1
             # Check for dotted prefix: a.b.c with args
             while func_start >= 2 and words[func_start - 1] == ".":
                 func_name = words[func_start - 2] + "." + func_name
                 func_start -= 2
+            # Check for multi-word prefix: group by with x → group_by(x)
+            # Collect consecutive plain identifier words immediately before func_start
+            extra = []
+            while func_start >= 1:
+                candidate = words[func_start - 1]
+                if (candidate[0].isalpha() or candidate[0] == '_') and candidate.lower() not in NON_CALL_WITH:
+                    extra.insert(0, candidate)
+                    func_start -= 1
+                else:
+                    break
+            if extra:
+                func_name = "_".join(extra) + "_" + func_name.replace(".", "_")
+                # If original had dots, rebuild; otherwise just join
+                if "." not in prev:
+                    func_name = "_".join(extra + [prev])
 
             args_text = " ".join(words[idx + 1:])
             args_text = self._process_string_literals(args_text)
