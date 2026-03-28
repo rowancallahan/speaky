@@ -234,6 +234,9 @@ OPERATOR_PHRASES = [
     ("plus", "+"),
     ("minus", "-"),
     ("assign", "="),
+    # Pipe operator — spoken form for >>
+    ("then", ">>"),
+    ("pipe", ">>"),
 ]
 
 # Pre-split operator phrases for word-by-word matching
@@ -903,7 +906,35 @@ class Parser:
         # Operators
         text = self._replace_operators(text)
 
+        # Join multi-word identifiers around pipe operator >>
+        # "raw data >> filter rows" → "raw_data >> filter_rows"
+        if ">>" in text:
+            text = self._join_pipe_identifiers(text)
+
         return text
+
+    def _join_pipe_identifiers(self, text):
+        """Join multi-word identifier segments separated by >> pipe operators.
+
+        Splits on >>, joins the word run on each side with _, reassembles.
+        Each segment is a sequence of space-separated plain words.
+        Non-word tokens (parens, operators, strings) are preserved as-is.
+
+        "raw data >> filter rows"            → "raw_data >> filter_rows"
+        "cars >> filter rows >> arrange"     → "cars >> filter_rows >> arrange"
+        "x >> foo(y)"                        → "x >> foo(y)"  (parens unchanged)
+        """
+        import re
+        segments = text.split(">>")
+        joined = []
+        for seg in segments:
+            seg = seg.strip()
+            # Only join if the segment is purely plain words (no parens/operators)
+            # i.e. all tokens are word-chars or spaces
+            if re.fullmatch(r'[A-Za-z_]\w*(?:\s+[A-Za-z_]\w*)*', seg):
+                seg = "_".join(seg.split())
+            joined.append(seg)
+        return " >> ".join(joined)
 
     def _replace_operators(self, text):
         """Replace spoken operator phrases with Python operators, word-by-word."""
