@@ -403,6 +403,129 @@ check_gg("kitchen sink",
      + p9.scale_color_brewer(type="qual")))
 
 # ---------------------------------------------------------------------------
+# Section 5: Additional themes
+# ---------------------------------------------------------------------------
+
+print("\n── Additional themes ───────────────────────────────────────────────")
+
+check_gg("theme_gray",
+    plot(df, x="x", y="y").points().theme_gray(),
+    p9.ggplot(df, aes(x="x", y="y")) + p9.geom_point() + p9.theme_gray())
+
+check_gg("theme_light",
+    plot(df, x="x", y="y").points().theme_light(),
+    p9.ggplot(df, aes(x="x", y="y")) + p9.geom_point() + p9.theme_light())
+
+check_gg("theme_linedraw",
+    plot(df, x="x", y="y").points().theme_linedraw(),
+    p9.ggplot(df, aes(x="x", y="y")) + p9.geom_point() + p9.theme_linedraw())
+
+check_gg("theme_538",
+    plot(df, x="x", y="y").points().theme_538(),
+    p9.ggplot(df, aes(x="x", y="y")) + p9.geom_point() + p9.theme_538())
+
+check_gg("theme_tufte",
+    plot(df, x="x", y="y").points().theme_tufte(),
+    p9.ggplot(df, aes(x="x", y="y")) + p9.geom_point() + p9.theme_tufte())
+
+check_gg("theme_seaborn",
+    plot(df, x="x", y="y").points().theme_seaborn(),
+    p9.ggplot(df, aes(x="x", y="y")) + p9.geom_point() + p9.theme_seaborn())
+
+check_gg("theme_matplotlib",
+    plot(df, x="x", y="y").points().theme_matplotlib(),
+    p9.ggplot(df, aes(x="x", y="y")) + p9.geom_point() + p9.theme_matplotlib())
+
+# ---------------------------------------------------------------------------
+# Section 6: Coords
+# ---------------------------------------------------------------------------
+
+print("\n── Coords ──────────────────────────────────────────────────────────")
+
+check_gg("zoom / coord_cartesian",
+    plot(df, x="x", y="y").points().zoom(xlim=(1, 4)),
+    p9.ggplot(df, aes(x="x", y="y")) + p9.geom_point() + p9.coord_cartesian(xlim=(1, 4)))
+
+check_gg("fixed_ratio / coord_fixed",
+    plot(df, x="x", y="y").points().fixed_ratio(ratio=1),
+    p9.ggplot(df, aes(x="x", y="y")) + p9.geom_point() + p9.coord_fixed(ratio=1))
+
+# ---------------------------------------------------------------------------
+# Section 7: Scales
+# ---------------------------------------------------------------------------
+
+print("\n── Scales ──────────────────────────────────────────────────────────")
+
+check_gg("color_gradient",
+    plot(df, x="x", y="y", color="val").points().color_gradient(low="white", high="red"),
+    p9.ggplot(df, aes(x="x", y="y", color="val")) + p9.geom_point() + p9.scale_color_gradient(low="white", high="red"))
+
+check_gg("fill_gradient",
+    plot(df, x="x", y="y", fill="val").points().fill_gradient(low="white", high="blue"),
+    p9.ggplot(df, aes(x="x", y="y", fill="val")) + p9.geom_point() + p9.scale_fill_gradient(low="white", high="blue"))
+
+check_gg("fill_manual",
+    plot(df, x="g", fill="g").bars().fill_manual(values=["red", "blue"]),
+    p9.ggplot(df, aes(x="g", fill="g")) + p9.geom_bar() + p9.scale_fill_manual(values=["red", "blue"]))
+
+check_gg("scale_x continuous",
+    plot(df, x="x", y="y").points().scale_x(breaks=[1,2,3,4,5]),
+    p9.ggplot(df, aes(x="x", y="y")) + p9.geom_point() + p9.scale_x_continuous(breaks=[1,2,3,4,5]))
+
+check_gg("scale_size",
+    plot(df, x="x", y="y", size="val").points().scale_size(range=(1, 10)),
+    p9.ggplot(df, aes(x="x", y="y", size="val")) + p9.geom_point() + p9.scale_size(range=(1, 10)))
+
+# ---------------------------------------------------------------------------
+# Section 8: Facets
+# ---------------------------------------------------------------------------
+
+print("\n── Facets ──────────────────────────────────────────────────────────")
+
+check_gg("facet_wrap with ncol",
+    plot(df, x="x", y="y").points().wrap_by("g", ncol=2),
+    p9.ggplot(df, aes(x="x", y="y")) + p9.geom_point() + p9.facet_wrap("g", ncol=2))
+
+check_gg("grid_by cols only",
+    plot(df, x="x", y="y").points().grid_by(cols="g"),
+    p9.ggplot(df, aes(x="x", y="y")) + p9.geom_point() + p9.facet_grid(".~g"))
+
+# ---------------------------------------------------------------------------
+# Section 9: Labels
+# ---------------------------------------------------------------------------
+
+print("\n── Labels ──────────────────────────────────────────────────────────")
+
+check_gg("labels() all at once",
+    plot(df, x="x", y="y").points().labels(title="T", x="X", y="Y"),
+    p9.ggplot(df, aes(x="x", y="y")) + p9.geom_point() + p9.labs(title="T", x="X", y="Y"))
+
+check_gg("expand_limits",
+    plot(df, x="x", y="y").points().expand_limits(y=0),
+    p9.ggplot(df, aes(x="x", y="y")) + p9.geom_point() + p9.expand_limits(y=0))
+
+# ---------------------------------------------------------------------------
+# Section 10: End-to-end spoken_dplyr → spoken_plotnine
+# ---------------------------------------------------------------------------
+
+print("\n── End-to-end dplyr → plotnine ─────────────────────────────────────")
+
+from spoken_dplyr import filter_rows, mutate, arrange, group_by, summarize
+
+# Piped data into plot — spoken_dplyr result feeds spoken_plotnine
+filtered = df >> filter_rows("x > 1") >> mutate(z=lambda d: d.x + d.y)
+
+check_gg("dplyr filtered data into plot",
+    plot(filtered, x="x", y="z", color="g").points().theme_minimal(),
+    p9.ggplot(filtered, aes(x="x", y="z", color="g")) + p9.geom_point() + p9.theme_minimal())
+
+summary_df = df >> group_by("g") >> summarize(mean_x=("x", "mean"), total_y=("y", "sum"))
+
+check_gg("summarized data into bar plot",
+    plot(summary_df, x="g", y="mean_x").columns().theme_classic(),
+    p9.ggplot(summary_df, aes(x="g", y="mean_x")) + p9.geom_col() + p9.theme_classic())
+
+# ---------------------------------------------------------------------------
 # Summary
 # ---------------------------------------------------------------------------
 
