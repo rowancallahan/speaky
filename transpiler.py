@@ -588,6 +588,12 @@ class Parser:
             function greet with parameters name and age
             → def greet(name, age):
 
+        Multi-word function names (words between 'function' and 'with'/'parameters'):
+            function fizz buzz with parameters n
+            → def fizz_buzz(n):
+            function get horse power with parameters car
+            → def get_horse_power(car):
+
         Terse form (legacy):
             function greet parameters name age
             → def greet(name, age):
@@ -596,24 +602,30 @@ class Parser:
         if len(words) < 3:
             return ExpressionStatement(" ".join(words))
 
-        name = words[2]
         params = []
 
-        # Preferred form: "function X with parameters P1 and P2"
+        # Preferred form: find "with" then "parameters"
         with_idx = self._find_word(words, "with", start=3)
         if with_idx is not None:
+            # Everything between words[2] and with_idx is the function name
+            name = "_".join(words[2:with_idx])
             param_idx = self._find_word(words, "parameters", start=with_idx + 1)
             if param_idx is not None and param_idx == with_idx + 1:
-                # "with parameters P1 and P2 ..."
                 raw_params = words[param_idx + 1:]
                 params = self._parse_param_list(raw_params)
                 return FunctionDef(name, params)
+            # "with" present but no "parameters" — just the name
+            return FunctionDef(name, params)
 
-        # Terse form: "function X parameters P1 P2 P3"
+        # Terse form: find "parameters" — name is everything before it
         param_idx = self._find_word(words, "parameters", start=3)
         if param_idx is not None:
-                params = words[param_idx + 1:]
+            name = "_".join(words[2:param_idx])
+            params = words[param_idx + 1:]
+            return FunctionDef(name, params)
 
+        # No parameters at all — rest of words after "function" is the name
+        name = "_".join(words[2:])
         return FunctionDef(name, params)
 
     def _parse_param_list(self, raw_words):
@@ -664,13 +676,15 @@ class Parser:
                     break
 
             if default_idx is not None:
-                param_name = " ".join(group[:default_idx])
+                # Multi-word param name: "horse power with default 0" → horse_power=0
+                param_name = "_".join(group[:default_idx])
                 default_val = " ".join(group[default_idx + 2:])
                 # Process the default value through expression pipeline
                 default_val = self._process_expression(default_val)
                 params.append(param_name + "=" + default_val)
             else:
-                params.append(" ".join(group))
+                # Multi-word param: "horse power" → horse_power
+                params.append("_".join(group))
 
         return params
 
@@ -733,14 +747,19 @@ class Parser:
 
     def _parse_the_assignment(self, words):
         """Parse: the <var> is <value_expr>
-        Example: the count is 5 → count = 5
+        Example: the count is 5        → count = 5
+                 the horse power is 5  → horse_power = 5
+                 the mean x is 0.5     → mean_x = 0.5
+
+        Everything between 'the' and 'is' becomes the variable name (joined with _).
         """
         # Find "is" keyword
         is_idx = self._find_word(words, "is", start=2)
         if is_idx is None or is_idx < 2:
             return ExpressionStatement(" ".join(words))
 
-        var = words[1]
+        # Multi-word variable name: words[1:is_idx] joined with underscores
+        var = "_".join(words[1:is_idx])
         value_text = " ".join(words[is_idx + 1:])
 
         # Check if value contains an enchantment
@@ -988,14 +1007,24 @@ class Parser:
         if len(words) < 2:
             return text
 
-        # Build function name (possibly with dot)
-        func_parts = [words[1]]
-        i = 2
-        while i + 1 < len(words) and words[i] in ("dot", "into"):
-            func_parts.append(words[i + 1])
-            i += 2
-
-        func_name = ".".join(func_parts)
+        # Build function name:
+        # - "call fizz buzz with n"         → fizz_buzz(n)
+        # - "call foo dot bar with n"        → foo.bar(n)
+        # - "call get horse power with car"  → get_horse_power(car)
+        # Plain words before "with"/"dot"/"into" get joined with _; dot/into adds a .
+        name_words = []   # accumulates plain identifier words for current segment
+        dot_segments = [] # each dot segment is a list of plain words
+        i = 1
+        while i < len(words) and words[i] not in ("with",):
+            if words[i] in ("dot", "into") and i + 1 < len(words):
+                dot_segments.append(name_words)
+                name_words = [words[i + 1]]
+                i += 2
+            else:
+                name_words.append(words[i])
+                i += 1
+        dot_segments.append(name_words)
+        func_name = ".".join("_".join(seg) for seg in dot_segments if seg)
 
         # Check for "with" keyword
         if i < len(words) and words[i] == "with":
@@ -1025,8 +1054,20 @@ class Parser:
         return result
 
     def _smart_split_args(self, args_text):
-        """Split arguments respecting quoted strings, character by character."""
-        args = []
+        """Split call arguments on 'and', respecting quoted strings.
+
+        Each 'and'-delimited group of words is joined with _ to form one arg.
+        Single words pass through unchanged. Quoted strings are kept as-is.
+
+        Examples:
+            "x and y"                   → ["x", "y"]
+            "horse power and fuel type" → ["horse_power", "fuel_type"]
+            "x and \"hello\" and y"     → ["x", '"hello"', "y"]
+            "x"                         → ["x"]
+            '"hello world"'             → ['"hello world"']
+        """
+        # First, tokenize respecting quoted strings
+        tokens = []
         current = []
         in_quotes = False
 
@@ -1037,17 +1078,48 @@ class Parser:
             elif ch == '"' and in_quotes:
                 in_quotes = False
                 current.append(ch)
+                tokens.append("".join(current))
+                current = []
             elif ch == ' ' and not in_quotes:
-                token = "".join(current).strip()
-                if token:
-                    args.append(token)
+                tok = "".join(current).strip()
+                if tok:
+                    tokens.append(tok)
                 current = []
             else:
                 current.append(ch)
 
-        token = "".join(current).strip()
-        if token:
-            args.append(token)
+        tok = "".join(current).strip()
+        if tok:
+            tokens.append(tok)
+
+        if not tokens:
+            return []
+
+        # Split on "and" into groups; each group is joined with _
+        groups = []
+        current_group = []
+        for tok in tokens:
+            if tok == "and" and not (tok.startswith('"') or tok.startswith("'")):
+                if current_group:
+                    groups.append(current_group)
+                current_group = []
+            else:
+                current_group.append(tok)
+        if current_group:
+            groups.append(current_group)
+
+        # Each group: if it's a single quoted string, keep as-is;
+        # otherwise join multiple plain words with _
+        args = []
+        for group in groups:
+            if len(group) == 1:
+                args.append(group[0])
+            else:
+                # Check if any element is a quoted string — if so, keep spaced
+                if any(g.startswith('"') or g.startswith("'") for g in group):
+                    args.append(" ".join(group))
+                else:
+                    args.append("_".join(group))
 
         return args
 

@@ -124,6 +124,45 @@ oralpython/
     └── package.json
 ```
 
+## spoken_plotnine (added 2026-03-28)
+
+Full English fluent interface to plotnine. Every method compiles 1:1 to a plotnine object.
+- **File:** `spoken_plotnine.py`
+- **Tests:** `test_spoken_plotnine.py` — 66 passing structural equality tests
+- **Usage:** `from spoken_plotnine import plot`
+  ```python
+  plot(df, x="x", y="y", color="g").points().smooth().theme_minimal().title("My Chart")
+  ```
+- **Coverage:** all geoms, themes, scales, coords, facets, labels
+
+## spoken_dplyr.py (added 2026-03-28)
+
+Full Python dplyr with >> pipe operator. All verbs map 1:1 to pandas.
+- **File:** `spoken_dplyr.py`
+- **Tests:** `test_spoken_dplyr.py` — 56 passing
+- **Verbs:** filter_rows, select_cols, mutate, arrange, group_by, summarize, count, distinct, head/tail/slice, pull, relocate, unite, separate, pivot_longer/wider, left/right/inner/full/anti/semi join
+- **col() helper:** `col("horse power")` → `"horse_power"` — spoken multi-word column names
+- **rename_cols_spoken(df):** normalizes all column names to snake_case on load
+- **pipe() function:** explicit alternative to >> when spoken style preferred
+
+## Multi-word identifiers (added 2026-03-28)
+
+Now supported natively in the transpiler:
+- `the horse power is 200` → `horse_power = 200` (everything between 'the' and 'is')
+- `the miles per gallon is 30` → `miles_per_gallon = 30`
+- `function fizz buzz with parameters n` → `def fizz_buzz(n):` (between 'function' and 'with')
+- `function get horse power with parameters car` → `def get_horse_power(car):`
+- Single-word names still work unchanged. 58 transpiler tests still pass.
+
+## Planned Next Modules
+
+- **Spoken shell** — verbal interface to shell operations. Files numbered for navigation: `01_spoken_shell.py`, `02_...`
+- Variable names: everything between `the` and `is` → `the horse power is 200` → `horse_power = 200`
+- Function defs: everything between `function` and `with` → `function fizz buzz with parameters n` → `def fizz_buzz(n):`
+- Function calls: everything between `call` and `with` → `call fizz buzz with n` → `fizz_buzz(n)`
+- Dot chains still work: `call foo dot bar with x` → `foo.bar(x)`
+- All 58 existing transpiler tests still pass
+
 ## Next Steps
 
 1. Phase 2 expression parser (recursive descent, `comma` as arg separator)
@@ -131,4 +170,6 @@ oralpython/
 3. Default parameters, empty collections
 4. Reduce micrograd `literally` usage from 21% → ~5%
 5. Spoken APL dialect for math (future)
-6. Variable assignment via "the X is Y" → `x = y` (e.g. "the count is 5" → `count = 5`). This makes variable instantiation read like natural English prose. Not yet implemented — planned for next session.
+6. Multi-word identifiers in spoken python (morning decision)
+7. Spoken shell (01_spoken_shell.py)
+8. Spoken dplyr (02_spoken_dplyr.py)
