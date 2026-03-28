@@ -335,6 +335,102 @@ class Plot:
         return self._add(p9.geom_pointdensity(**kwargs))
 
     # ------------------------------------------------------------------
+    # Stats  (stat_* objects used as layers — add_stat pattern)
+    # ------------------------------------------------------------------
+
+    def stat_smooth(self, **kwargs):
+        """stat_smooth() — trend line stat (alternative to geom_smooth)"""
+        return self._add(p9.stat_smooth(**kwargs))
+
+    def stat_summary(self, **kwargs):
+        """stat_summary(fun_y=, fun_ymin=, fun_ymax=) — summarize y per x"""
+        return self._add(p9.stat_summary(**kwargs))
+
+    def stat_summary_bin(self, **kwargs):
+        """stat_summary_bin() — summarize within x bins"""
+        return self._add(p9.stat_summary_bin(**kwargs))
+
+    def stat_ecdf(self, **kwargs):
+        """stat_ecdf() — empirical cumulative distribution function"""
+        return self._add(p9.stat_ecdf(**kwargs))
+
+    def stat_ellipse(self, **kwargs):
+        """stat_ellipse() — confidence ellipse around point cloud"""
+        return self._add(p9.stat_ellipse(**kwargs))
+
+    def stat_hull(self, **kwargs):
+        """stat_hull() — convex hull around point cloud"""
+        return self._add(p9.stat_hull(**kwargs))
+
+    def stat_density(self, **kwargs):
+        """stat_density()"""
+        return self._add(p9.stat_density(**kwargs))
+
+    def stat_bin(self, **kwargs):
+        """stat_bin()"""
+        return self._add(p9.stat_bin(**kwargs))
+
+    def stat_count(self, **kwargs):
+        """stat_count()"""
+        return self._add(p9.stat_count(**kwargs))
+
+    def stat_identity(self, **kwargs):
+        """stat_identity()"""
+        return self._add(p9.stat_identity(**kwargs))
+
+    def stat_function(self, **kwargs):
+        """stat_function(fun=) — plot an arbitrary function"""
+        return self._add(p9.stat_function(**kwargs))
+
+    def stat_qq(self, **kwargs):
+        """stat_qq()"""
+        return self._add(p9.stat_qq(**kwargs))
+
+    def stat_qq_line(self, **kwargs):
+        """stat_qq_line()"""
+        return self._add(p9.stat_qq_line(**kwargs))
+
+    def stat_unique(self, **kwargs):
+        """stat_unique() — remove duplicate rows"""
+        return self._add(p9.stat_unique(**kwargs))
+
+    def stat_sum(self, **kwargs):
+        """stat_sum() — sum duplicate points"""
+        return self._add(p9.stat_sum(**kwargs))
+
+    def stat_density_2d(self, **kwargs):
+        """stat_density_2d()"""
+        return self._add(p9.stat_density_2d(**kwargs))
+
+    def stat_bin_2d(self, **kwargs):
+        """stat_bin2d()"""
+        return self._add(p9.stat_bin2d(**kwargs))
+
+    def stat_quantile(self, **kwargs):
+        """stat_quantile()"""
+        return self._add(p9.stat_quantile(**kwargs))
+
+    def stat_ydensity(self, **kwargs):
+        """stat_ydensity()"""
+        return self._add(p9.stat_ydensity(**kwargs))
+
+    def stat_bindot(self, **kwargs):
+        """stat_bindot()"""
+        return self._add(p9.stat_bindot(**kwargs))
+
+    def stat_boxplot(self, **kwargs):
+        """stat_boxplot()"""
+        return self._add(p9.stat_boxplot(**kwargs))
+
+    def stat_sina(self, **kwargs):
+        """stat_sina()"""
+        return self._add(p9.stat_sina(**kwargs))
+
+    def stat_pointdensity(self, **kwargs):
+        """stat_pointdensity()"""
+        return self._add(p9.stat_pointdensity(**kwargs))
+
+    # ------------------------------------------------------------------
     # Facets
     # ------------------------------------------------------------------
 

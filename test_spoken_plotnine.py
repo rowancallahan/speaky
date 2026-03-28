@@ -33,6 +33,28 @@ failed = 0
 errors = []
 
 
+def _params_equal(pa, pb):
+    """Compare geom/stat params dicts tolerantly.
+
+    Stat and position objects don't implement __eq__ so we compare by type.
+    Scalar values (str, int, float, bool, None) compare by value.
+    """
+    if pa.keys() != pb.keys():
+        return False, f"param keys differ: {set(pa.keys())} vs {set(pb.keys())}"
+    for k in pa:
+        va, vb = pa[k], pb[k]
+        if type(va) != type(vb):
+            return False, f"param '{k}' type: {type(va).__name__} != {type(vb).__name__}"
+        # Objects without __eq__ (stats, positions): compare by type name only
+        if isinstance(va, (str, int, float, bool, type(None), tuple, list)):
+            if va != vb:
+                return False, f"param '{k}' value: {va!r} != {vb!r}"
+        else:
+            # For objects: just confirm same type (already checked above)
+            pass
+    return True, None
+
+
 def _layers_equal(a_gg, b_gg):
     """Compare layer lists structurally."""
     al, bl = a_gg.layers, b_gg.layers
@@ -41,8 +63,9 @@ def _layers_equal(a_gg, b_gg):
     for i, (la, lb) in enumerate(zip(al, bl)):
         if type(la.geom) != type(lb.geom):
             return False, f"Layer {i} geom type: {type(la.geom).__name__} != {type(lb.geom).__name__}"
-        if la.geom.params != lb.geom.params:
-            return False, f"Layer {i} geom params: {la.geom.params} != {lb.geom.params}"
+        ok, msg = _params_equal(la.geom.params, lb.geom.params)
+        if not ok:
+            return False, f"Layer {i} geom params: {msg}"
         if dict(la.mapping) != dict(lb.mapping):
             return False, f"Layer {i} mapping: {dict(la.mapping)} != {dict(lb.mapping)}"
     return True, None
@@ -514,6 +537,105 @@ from spoken_dplyr import filter_rows, mutate, arrange, group_by, summarize
 
 # Piped data into plot — spoken_dplyr result feeds spoken_plotnine
 filtered = df >> filter_rows("x > 1") >> mutate(z=lambda d: d.x + d.y)
+
+# ---------------------------------------------------------------------------
+# Section 9b: Stats
+# ---------------------------------------------------------------------------
+
+print("\n── Stats ───────────────────────────────────────────────────────────")
+
+from plotnine.stats.stat_smooth      import stat_smooth
+from plotnine.stats.stat_summary     import stat_summary
+from plotnine.stats.stat_ecdf        import stat_ecdf
+from plotnine.stats.stat_ellipse     import stat_ellipse
+from plotnine.stats.stat_function    import stat_function
+from plotnine.stats.stat_density     import stat_density
+from plotnine.stats.stat_count       import stat_count
+from plotnine.stats.stat_identity    import stat_identity
+from plotnine.stats.stat_qq          import stat_qq
+from plotnine.stats.stat_sum         import stat_sum
+
+def stat_type_check(name, method_call, expected_stat_class):
+    global passed, failed
+    base = plot(df, x="x", y="y")
+    try:
+        result = method_call(base)
+        layers = result.build().layers
+        assert layers, "No layers added"
+        added_stat = layers[-1].stat
+        assert isinstance(added_stat, expected_stat_class), (
+            f"Expected {expected_stat_class.__name__}, got {type(added_stat).__name__}"
+        )
+        passed += 1
+        print(f"  PASS  {name}")
+    except AssertionError as e:
+        failed += 1
+        errors.append((name, str(e)))
+        print(f"  FAIL  {name}: {e}")
+    except Exception as e:
+        failed += 1
+        errors.append((name, traceback.format_exc()))
+        print(f"  ERR   {name}: {e}")
+
+stat_type_check("stat_smooth()",    lambda p: p.stat_smooth(),    stat_smooth)
+stat_type_check("stat_summary()",   lambda p: p.stat_summary(),   stat_summary)
+stat_type_check("stat_ecdf()",      lambda p: p.stat_ecdf(),      stat_ecdf)
+stat_type_check("stat_density()",   lambda p: p.stat_density(),   stat_density)
+stat_type_check("stat_count()",     lambda p: p.stat_count(),     stat_count)
+stat_type_check("stat_identity()",  lambda p: p.stat_identity(),  stat_identity)
+stat_type_check("stat_qq()",        lambda p: p.stat_qq(),        stat_qq)
+stat_type_check("stat_sum()",       lambda p: p.stat_sum(),       stat_sum)
+
+# Full equality: stat layer added to plot
+check_gg("stat_smooth full",
+    plot(df, x="x", y="y").points().stat_smooth(),
+    p9.ggplot(df, aes(x="x", y="y")) + p9.geom_point() + p9.stat_smooth())
+
+check_gg("stat_ecdf full",
+    plot(df, x="x").stat_ecdf(),
+    p9.ggplot(df, aes(x="x")) + p9.stat_ecdf())
+
+# ---------------------------------------------------------------------------
+# Section 9c: Annotate and Legend
+# ---------------------------------------------------------------------------
+
+print("\n── Annotate / Legend ───────────────────────────────────────────────")
+
+check_gg("annotate text",
+    plot(df, x="x", y="y").points().annotate("text", x=3, y=3, label="peak"),
+    p9.ggplot(df, aes(x="x", y="y")) + p9.geom_point() + p9.annotate("text", x=3, y=3, label="peak"))
+
+check_gg("annotate hline",
+    plot(df, x="x", y="y").points().annotate("hline", yintercept=3),
+    p9.ggplot(df, aes(x="x", y="y")) + p9.geom_point() + p9.annotate("hline", yintercept=3))
+
+check_gg("legend guides",
+    plot(df, x="x", y="y", color="g").points().legend(color=p9.guide_legend(title="Group")),
+    p9.ggplot(df, aes(x="x", y="y", color="g")) + p9.geom_point() + p9.guides(color=p9.guide_legend(title="Group")))
+
+# ---------------------------------------------------------------------------
+# Section 9d: Positions used inside geoms
+# ---------------------------------------------------------------------------
+
+print("\n── Positions inside geoms ──────────────────────────────────────────")
+
+check_gg("bars dodged",
+    plot(df, x="g", fill="h").bars(position=p9.position_dodge()),
+    p9.ggplot(df, aes(x="g", fill="h")) + p9.geom_bar(position=p9.position_dodge()))
+
+check_gg("bars stacked",
+    plot(df, x="g", fill="h").bars(position=p9.position_stack()),
+    p9.ggplot(df, aes(x="g", fill="h")) + p9.geom_bar(position=p9.position_stack()))
+
+check_gg("bars filled",
+    plot(df, x="g", fill="h").bars(position=p9.position_fill()),
+    p9.ggplot(df, aes(x="g", fill="h")) + p9.geom_bar(position=p9.position_fill()))
+
+# ---------------------------------------------------------------------------
+# Section 10: End-to-end spoken_dplyr → spoken_plotnine
+# ---------------------------------------------------------------------------
+
+print("\n── End-to-end dplyr → plotnine ─────────────────────────────────────")
 
 check_gg("dplyr filtered data into plot",
     plot(filtered, x="x", y="z", color="g").points().theme_minimal(),

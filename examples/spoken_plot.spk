@@ -1,0 +1,57 @@
+as an aside spoken_plot.spk
+as an aside Full spoken Python workflow: spoken dplyr + spoken plotnine
+as an aside Run: python spoken_python.py examples/spoken_plot.spk --run
+
+as an aside Imports
+import pandas
+import spoken_dplyr
+import spoken_plotnine
+
+as an aside Load data
+literally from spoken_dplyr import filter_rows, mutate, arrange, group_by, summarize, count, col, rename_cols_spoken
+literally from spoken_plotnine import plot
+
+as an aside Build a small dataset of cars
+literally raw_data = pandas.DataFrame({"make": ["Toyota","Honda","Ford","Toyota","Honda","Ford","Toyota"], "mpg": [32,28,22,35,30,18,29], "horsepower": [130,140,200,120,145,210,135], "cylinders": [4,4,6,4,4,6,4]})
+
+as an aside Rename columns to snake case so col() works
+literally cars = rename_cols_spoken(raw_data)
+
+as an aside Filter to efficient cars and add a power to weight ratio column
+literally efficient = cars >> filter_rows("mpg > 25") >> mutate(efficiency_score=lambda d: d["mpg"] / d["horsepower"] * 100)
+
+as an aside Summarize average mpg by make
+literally summary = cars >> group_by("make") >> summarize(mean_mpg=("mpg", "mean"), count=("mpg", "count"))
+
+as an aside Plot 1 — scatter of mpg vs horsepower colored by make
+literally p1 = (plot(cars, x="horsepower", y="mpg", color="make").points().smooth(method="lm", se=False).title("MPG vs Horsepower").xlabel("Horsepower").ylabel("Miles Per Gallon").theme_minimal())
+
+as an aside Plot 2 — bar chart of mean mpg by make
+literally p2 = (plot(summary, x="make", y="mean_mpg", fill="make").columns().title("Average MPG by Make").xlabel("Make").ylabel("Mean MPG").theme_classic().fill_brewer(type="qual"))
+
+as an aside Plot 3 — histogram of mpg distribution
+literally p3 = (plot(cars, x="mpg").histogram(bins=8).vertical_line(xintercept=25, color="red").title("MPG Distribution").xlabel("Miles Per Gallon").theme_minimal())
+
+as an aside Plot 4 — boxplot of mpg by make
+literally p4 = (plot(cars, x="make", y="mpg", fill="make").boxplot().title("MPG Distribution by Make").xlabel("Make").ylabel("MPG").theme_black_white().fill_manual(values=["steelblue","coral","seagreen"]))
+
+as an aside Plot 5 — efficient cars scatter with count
+literally p5 = (plot(efficient, x="horsepower", y="efficiency_score", color="make").points(size=4).horizontal_line(yintercept=20, linetype="dashed").title("Efficiency Score vs Horsepower").xlabel("Horsepower").ylabel("Efficiency Score").theme_minimal())
+
+as an aside Show number of cars per make
+literally print(cars >> count("make"))
+
+as an aside Show the efficient subset
+literally print(efficient[["make","mpg","horsepower","efficiency_score"]])
+
+as an aside Show summary
+literally print(summary)
+
+as an aside Save all plots
+literally p1.save("output_scatter.png", dpi=72)
+literally p2.save("output_bars.png", dpi=72)
+literally p3.save("output_hist.png", dpi=72)
+literally p4.save("output_boxplot.png", dpi=72)
+literally p5.save("output_efficiency.png", dpi=72)
+
+literally print("All plots saved.")
